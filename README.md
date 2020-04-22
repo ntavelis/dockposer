@@ -38,9 +38,9 @@ Note: the url path must point to the location of the package. Composer will syml
 
 ### Execute the debug command
 1. Navigate to the package's root directory, e.g `/home/antavelis/webprojects/dockposer`
-2.```cd ./docker```
+2. ```cd ./docker```
 3. Setup a break point in phpstorm, somewhere in the code, e.g. in the class `src/DockposerPlugin.php`
-3. Execute:
+4. Execute:
 ```shell script
 docker-compose run --rm -e PHP_IDE_CONFIG="serverName=application" -e COMPOSER_ALLOW_XDEBUG=true phpserver-dockposer bash -c 'cd /srv/app/demoapp; php -d xdebug.remote_host=172.17.0.1 /usr/local/bin/composer install' 
 ```

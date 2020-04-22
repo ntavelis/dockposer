@@ -54,6 +54,7 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
         }, $packages);
 
         $provider = new DependenciesProvider($dependencies);
+        $dependencies = $provider->getDependencies();
         $this->io->write('postDependenciesSolving :D');
     }
 
