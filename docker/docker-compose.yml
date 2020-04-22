@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+    phpserver-dockposer:
+        image: phpserver
+        container_name: phpserver-dockposer
+        build:
+            context: ./php
+        restart: always
+        volumes:
+            - ../:/srv/app/dockposer
+            - ../../demoapp:/srv/app/demoapp

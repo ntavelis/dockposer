@@ -1,0 +1,29 @@
+{
+    "name": "ntavelis/dockposer",
+    "description": "Composer plugin that automatically generates docker files.",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Athanasios Ntavelis",
+            "email": "davelis89@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-curl": "*",
+        "composer-plugin-api": "^1.1"
+    },
+    "require-dev": {
+        "composer/composer": "^1.0.2",
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ntavelis\\Dockposer\\": "src/"
+        }
+    },
+    "extra": {
+        "class": "Ntavelis\\Dockposer\\DockposerPlugin"
+    }
+}
