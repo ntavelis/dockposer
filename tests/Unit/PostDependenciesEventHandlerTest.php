@@ -6,10 +6,9 @@ namespace Unit;
 
 use Composer\IO\IOInterface;
 use Ntavelis\Dockposer\Contracts\ExecutorInterface;
-use Ntavelis\Dockposer\Contracts\FilesystemInterface;
-use Ntavelis\Dockposer\DockposerConfig;
+use Ntavelis\Dockposer\Factory\ExecutorsFactory;
 use Ntavelis\Dockposer\PostDependenciesEventHandler;
-use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class PostDependenciesEventHandlerTest extends TestCase
@@ -18,35 +17,31 @@ class PostDependenciesEventHandlerTest extends TestCase
      * @var PostDependenciesEventHandler
      */
     private $executor;
-
     /**
-     * @var array
+     * @var ExecutorsFactory|MockObject
      */
-    private $composerDependencies = [
-        'php' => '[>= 7.2.5.0-dev < 8.0.0.0-dev]',
-        'ext-ctype' => '[]',
-        'ext-iconv' => '[]',
-        'ntavelis/dockposer' => '== 9999999-dev',
-    ];
+    private $executorsFactory;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $config = new DockposerConfig('/srv/app/dockposer', '/srv/app/demoapp');
-        $platformDependencies = new PlatformDependenciesProvider($this->composerDependencies);
-        $filesystem = $this->createMock(FilesystemInterface::class);
+        $this->executorsFactory = $this->createMock(ExecutorsFactory::class);
         $io = $this->createMock(IOInterface::class);
-        $this->executor = new PostDependenciesEventHandler($config, $platformDependencies, $filesystem, $io);
+        $this->executor = new PostDependenciesEventHandler($io, $this->executorsFactory);
     }
 
     /** @test */
-    public function itWillIterateAllTheGivenExecutorsAndGivenThatTheySupportAGivenActionWillCallThemToExecutreTheirLogic(): void
+    public function itWillIterateAllTheGivenExecutorsAndGivenThatTheySupportAGivenActionWillCallThemToExecuteTheirLogic(): void
     {
         $executor1 = $this->createMock(ExecutorInterface::class);
         $executor1->expects($this->once())->method('execute');
-        $executor1->expects($this->once())->method('supports')->willReturn(true);
+        $executor1->expects($this->once())->method('shouldExecute')->willReturn(true);
+        $executor2 = $this->createMock(ExecutorInterface::class);
+        $executor2->expects($this->once())->method('execute');
+        $executor2->expects($this->once())->method('shouldExecute')->willReturn(true);
+        $this->executorsFactory->expects($this->once())->method('createDefaultExecutors')->willReturn([$executor1, $executor2]);
 
-        $this->executor->run([$executor1]);
+        $this->executor->run();
     }
 }

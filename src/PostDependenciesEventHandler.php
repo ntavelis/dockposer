@@ -28,23 +28,22 @@ class PostDependenciesEventHandler
      * @var IOInterface
      */
     private $io;
+    /**
+     * @var ExecutorsFactory
+     */
+    private $executorsFactory;
 
     public function __construct(
-        DockposerConfig $config,
-        PlatformDependenciesProvider $platformDependenciesProvider,
-        FilesystemInterface $filesystem,
-        IOInterface $io
+        IOInterface $io,
+        ExecutorsFactory $executorsFactory
     ) {
-        $this->config = $config;
-        $this->platformDependenciesProvider = $platformDependenciesProvider;
-        $this->filesystem = $filesystem;
         $this->io = $io;
+        $this->executorsFactory = $executorsFactory;
     }
 
     public function run(): void
     {
-        $factory = new ExecutorsFactory($this->config, $this->filesystem);
-        $executors = $factory->createDefaultExecutors();
+        $executors = $this->executorsFactory->createDefaultExecutors();
 
         foreach ($executors as $executor) {
 
