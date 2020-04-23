@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Ntavelis\Dockposer\Filesystem;
 
-use League\Flysystem\FilesystemInterface as LeagueFilesystem;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\Exception\FileNotFoundException;
+use Ntavelis\Dockposer\Exception\UnableToCreateDirectory;
+use Ntavelis\Dockposer\Exception\UnableToPutContentsToFile;
 
 class Filesystem implements FilesystemInterface
 {
@@ -20,26 +21,30 @@ class Filesystem implements FilesystemInterface
         $this->pathPrefix = rtrim($pathPrefix, '\\/');
     }
 
-    public function put(string $path, string $contents): bool
+    /**
+     * @throws UnableToPutContentsToFile
+     */
+    public function put(string $path, string $contents): void
     {
         $location = $this->applyPathPrefix($path);
-        $result = file_put_contents($location, $contents, LOCK_EX);
+        $result = @file_put_contents($location, $contents, LOCK_EX);
         if ($result === false) {
-            return false;
+            throw new UnableToPutContentsToFile('Unable to update files ' . $location . ' content');
         }
-        return true;
     }
 
-    public function createDir(string $path): bool
+    /**
+     * @throws UnableToCreateDirectory
+     */
+    public function createDir(string $path): void
     {
         $location = $this->applyPathPrefix($path);
         if (!is_dir($location)) {
-            if (false === @mkdir($location, 0777, true)
+            if (false === @mkdir($location, 0644, false)
                 || false === is_dir($location)) {
-                return false;
+                throw new UnableToCreateDirectory('Unable to create directory ' . $location);
             }
         }
-        return true;
     }
 
     /**
@@ -47,9 +52,7 @@ class Filesystem implements FilesystemInterface
      */
     public function compileStub(string $stubPath): string
     {
-        if (!file_exists($stubPath)) {
-            throw new FileNotFoundException();
-        }
+        $this->fileExists($stubPath);
 
         return file_get_contents($stubPath) ?? '';
     }
@@ -57,5 +60,15 @@ class Filesystem implements FilesystemInterface
     public function applyPathPrefix(string $path): string
     {
         return $this->pathPrefix . DIRECTORY_SEPARATOR . ltrim($path, '\\/');
+    }
+
+    /**
+     * @throws FileNotFoundException
+     */
+    private function fileExists(string $filePath): void
+    {
+        if (!file_exists($filePath)) {
+            throw new FileNotFoundException('Unable to locate file ' . $filePath);
+        }
     }
 }
