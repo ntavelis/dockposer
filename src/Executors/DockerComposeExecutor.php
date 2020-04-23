@@ -36,7 +36,7 @@ class DockerComposeExecutor implements ExecutorInterface
         } catch (\Exception $exception) {
             return new ExecutorResult('Unable to create ' . self::DOCKER_COMPOSE_FILE . ' file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-        return new ExecutorResult('Created ' . self::DOCKER_COMPOSE_FILE . ', at ' . self::DOCKER_COMPOSE_FILE, ExecutorStatus::SUCCESS);
+        return new ExecutorResult('Created ' . self::DOCKER_COMPOSE_FILE . ', at ./' . self::DOCKER_COMPOSE_FILE, ExecutorStatus::SUCCESS);
     }
 
     public function shouldExecute(array $context = []): bool

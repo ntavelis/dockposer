@@ -38,7 +38,7 @@ class PhpFpmExecutor implements ExecutorInterface
         } catch (\Exception $exception) {
             return new ExecutorResult('Unable to create php-fpm dockerfile, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-        return new ExecutorResult("Added php-fpm Dockerfile at `{$this->getPhpFPMDockerfilePath()}`", ExecutorStatus::SUCCESS);
+        return new ExecutorResult("Added php-fpm Dockerfile at ./{$this->getPhpFPMDockerfilePath()}", ExecutorStatus::SUCCESS);
     }
 
     public function shouldExecute(array $context = []): bool

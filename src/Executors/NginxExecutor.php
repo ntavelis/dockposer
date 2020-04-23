@@ -38,7 +38,7 @@ class NginxExecutor implements ExecutorInterface
         } catch (\Exception $exception) {
             return new ExecutorResult('Unable to create nginx dockerfile, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-        return new ExecutorResult("Added nginx Dockerfile at `{$this->getNginxDockerfilePath()}`", ExecutorStatus::SUCCESS);
+        return new ExecutorResult("Added nginx Dockerfile at ./{$this->getNginxDockerfilePath()}", ExecutorStatus::SUCCESS);
     }
 
     public function shouldExecute(array $context = []): bool
