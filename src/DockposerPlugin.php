@@ -11,8 +11,6 @@ use Composer\Installer\InstallerEvent;
 use Composer\Installer\InstallerEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem as LeagueFilesystem;
 use Ntavelis\Dockposer\Factory\ExecutorsFactory;
 use Ntavelis\Dockposer\Filesystem\Filesystem;
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
@@ -53,11 +51,9 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
 
         $baseDir = dirname($this->config->get('vendor-dir'));
         $dockposerDirectory = dirname(__DIR__);
-        $adapter = new Local($baseDir);
-        $filesystem = new LeagueFilesystem($adapter);
         // TODO pass overrides to the DockposerConfig from composer.json extra section, if there are any
         $config = new DockposerConfig($dockposerDirectory, $baseDir);
-        $handler = new PostDependenciesEventHandler($this->io, new ExecutorsFactory($config, new Filesystem($filesystem)));
+        $handler = new PostDependenciesEventHandler($this->io, new ExecutorsFactory($config, new Filesystem($baseDir)));
         $handler->run();
     }
 

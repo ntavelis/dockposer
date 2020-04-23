@@ -11,23 +11,35 @@ use Ntavelis\Dockposer\Exception\FileNotFoundException;
 class Filesystem implements FilesystemInterface
 {
     /**
-     * @var LeagueFilesystem
+     * @var string
      */
-    private $implementation;
+    private $pathPrefix;
 
-    public function __construct(LeagueFilesystem $implementation)
+    public function __construct(string $pathPrefix)
     {
-        $this->implementation = $implementation;
+        $this->pathPrefix = rtrim($pathPrefix, '\\/');
     }
 
-    public function put(string $path, string $contents, array $config = []): bool
+    public function put(string $path, string $contents): bool
     {
-        return $this->implementation->put($path, $contents, $config);
+        $location = $this->applyPathPrefix($path);
+        $result = file_put_contents($location, $contents, LOCK_EX);
+        if ($result === false) {
+            return false;
+        }
+        return true;
     }
 
-    public function createDir(string $dirname, array $config = []): bool
+    public function createDir(string $path): bool
     {
-        return $this->implementation->createDir($dirname, $config);
+        $location = $this->applyPathPrefix($path);
+        if (!is_dir($location)) {
+            if (false === @mkdir($location, 0777, true)
+                || false === is_dir($location)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -42,5 +54,8 @@ class Filesystem implements FilesystemInterface
         return file_get_contents($stubPath) ?? '';
     }
 
-
+    public function applyPathPrefix(string $path): string
+    {
+        return $this->pathPrefix . DIRECTORY_SEPARATOR . ltrim($path, '\\/');
+    }
 }

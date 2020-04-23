@@ -8,9 +8,9 @@ use Ntavelis\Dockposer\Exception\FileNotFoundException;
 
 interface FilesystemInterface
 {
-    public function createDir(string $dirname, array $config = []): bool;
+    public function createDir(string $dirname): bool;
 
-    public function put(string $path, string $contents, array $config = []): bool;
+    public function put(string $path, string $contents): bool;
 
     /**
      * @throws FileNotFoundException
