@@ -8,14 +8,14 @@ use Composer\IO\IOInterface;
 use Ntavelis\Dockposer\Contracts\ExecutorInterface;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
-use Ntavelis\Dockposer\DockposerExecutor;
+use Ntavelis\Dockposer\PostDependenciesEventHandler;
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 use PHPUnit\Framework\TestCase;
 
-class DockerExecutorTest extends TestCase
+class PostDependenciesEventHandlerTest extends TestCase
 {
     /**
-     * @var DockposerExecutor
+     * @var PostDependenciesEventHandler
      */
     private $executor;
 
@@ -37,7 +37,7 @@ class DockerExecutorTest extends TestCase
         $platformDependencies = new PlatformDependenciesProvider($this->composerDependencies);
         $filesystem = $this->createMock(FilesystemInterface::class);
         $io = $this->createMock(IOInterface::class);
-        $this->executor = new DockposerExecutor($config, $platformDependencies, $filesystem, $io);
+        $this->executor = new PostDependenciesEventHandler($config, $platformDependencies, $filesystem, $io);
     }
 
     /** @test */

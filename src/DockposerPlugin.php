@@ -54,7 +54,7 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
         $adapter = new Local($baseDir);
         $filesystem = new LeagueFilesystem($adapter);
         $config = new DockposerConfig($dockposerDirectory, $baseDir);
-        $executor = new DockposerExecutor($config, $provider, new Filesystem($filesystem), $this->io);
+        $executor = new PostDependenciesEventHandler($config, $provider, new Filesystem($filesystem), $this->io);
         $executor->run();
     }
 

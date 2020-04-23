@@ -8,10 +8,9 @@ use Composer\IO\IOInterface;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
 use Ntavelis\Dockposer\Factory\ExecutorsFactory;
-use Ntavelis\Dockposer\Message\ExecutorResult;
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 
-class DockposerExecutor
+class PostDependenciesEventHandler
 {
     /**
      * @var DockposerConfig
