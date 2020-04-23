@@ -12,7 +12,6 @@ use Ntavelis\Dockposer\Message\ExecutorResult;
 
 class DockerComposeExecutor implements ExecutorInterface
 {
-    private const DOCKER_COMPOSE_FILE = 'docker-compose.yml';
     /**
      * @var FilesystemInterface
      */
@@ -37,7 +36,7 @@ class DockerComposeExecutor implements ExecutorInterface
         } catch (\Exception $exception) {
             return new ExecutorResult('Unable to create ' . $dockerComposeFile . ' file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-        return new ExecutorResult('Created docker-compose file, at ./' . $dockerComposeFile, ExecutorStatus::SUCCESS);
+        return new ExecutorResult('Added docker-compose file, at ./' . $dockerComposeFile, ExecutorStatus::SUCCESS);
     }
 
     public function shouldExecute(array $context = []): bool
