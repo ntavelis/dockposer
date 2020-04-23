@@ -12,7 +12,6 @@ use Ntavelis\Dockposer\Message\ExecutorResult;
 
 class PhpFpmExecutor implements ExecutorInterface
 {
-    private const DOCKER_PHP_FPM_DOCKERFILE = 'Dockerfile';
     /**
      * @var FilesystemInterface
      */
@@ -30,9 +29,8 @@ class PhpFpmExecutor implements ExecutorInterface
 
     public function execute(): ExecutorResult
     {
-        $dockerPhpFpmDir = $this->config->getExecutorConfig('docker_dir') . $this->config->getExecutorConfig('fpm_docker_dir');
         try {
-            $this->filesystem->createDir($dockerPhpFpmDir);
+            $this->filesystem->createDir($this->getDockerPhpFpmDir());
             $stub = $this->filesystem->compileStub($this->config->getDockposerDir() . '/stubs/dockerfile-php-fpm.stub');
             $this->filesystem->put($this->getPhpFPMDockerfilePath(), $stub);
         } catch (\Exception $exception) {
@@ -48,8 +46,11 @@ class PhpFpmExecutor implements ExecutorInterface
 
     private function getPhpFPMDockerfilePath(): string
     {
-        return $this->config->getExecutorConfig('docker_dir') . $this->config->getExecutorConfig('fpm_docker_dir')
-            . DIRECTORY_SEPARATOR .
-            $this->config->getExecutorConfig('dockerfile_name');
+        return $this->getDockerPhpFpmDir() . DIRECTORY_SEPARATOR . $this->config->getExecutorConfig('dockerfile_name');
+    }
+
+    private function getDockerPhpFpmDir(): string
+    {
+        return $this->config->getExecutorConfig('docker_dir') . DIRECTORY_SEPARATOR . $this->config->getExecutorConfig('fpm_docker_dir');
     }
 }

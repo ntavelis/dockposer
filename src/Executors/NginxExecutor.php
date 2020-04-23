@@ -29,9 +29,8 @@ class NginxExecutor implements ExecutorInterface
 
     public function execute(): ExecutorResult
     {
-        $dockerNginxDir = $this->config->getExecutorConfig('docker_dir') . $this->config->getExecutorConfig('nginx_docker_dir');
         try {
-            $this->filesystem->createDir($dockerNginxDir);
+            $this->filesystem->createDir($this->getDockerNginxDir());
             $stub = $this->filesystem->compileStub($this->config->getDockposerDir() . '/stubs/dockerfile-nginx.stub');
             $this->filesystem->put($this->getNginxDockerfilePath(), $stub);
         } catch (\Exception $exception) {
@@ -47,8 +46,11 @@ class NginxExecutor implements ExecutorInterface
 
     private function getNginxDockerfilePath(): string
     {
-        return $this->config->getExecutorConfig('docker_dir') . $this->config->getExecutorConfig('nginx_docker_dir')
-            . DIRECTORY_SEPARATOR .
-            $this->config->getExecutorConfig('dockerfile_name');
+        return $this->getDockerNginxDir() . DIRECTORY_SEPARATOR . $this->config->getExecutorConfig('dockerfile_name');
+    }
+
+    private function getDockerNginxDir(): string
+    {
+        return $this->config->getExecutorConfig('docker_dir') . DIRECTORY_SEPARATOR . $this->config->getExecutorConfig('nginx_docker_dir');
     }
 }
