@@ -6,6 +6,7 @@ namespace Ntavelis\Dockposer\Filesystem;
 
 use League\Flysystem\FilesystemInterface as LeagueFilesystem;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
+use Ntavelis\Dockposer\Exception\FileNotFoundException;
 
 class Filesystem implements FilesystemInterface
 {
@@ -28,4 +29,18 @@ class Filesystem implements FilesystemInterface
     {
         return $this->implementation->createDir($dirname, $config);
     }
+
+    /**
+     * @throws FileNotFoundException
+     */
+    public function compileStub(string $stubPath): string
+    {
+        if (!file_exists($stubPath)) {
+            throw new FileNotFoundException();
+        }
+
+        return file_get_contents($stubPath) ?? '';
+    }
+
+
 }

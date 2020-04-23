@@ -10,9 +10,9 @@ use Ntavelis\Dockposer\DockposerConfig;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
 use Ntavelis\Dockposer\Message\ExecutorResult;
 
-class NginxExecutor implements ExecutorInterface
+class DockerDirectoryExecutor implements ExecutorInterface
 {
-    private const DOCKER_NGINX_DOCKERFILE = 'docker/nginx/Dockerfile';
+    private const DOCKER_DIRECTORY = 'docker';
     /**
      * @var FilesystemInterface
      */
@@ -31,17 +31,15 @@ class NginxExecutor implements ExecutorInterface
     public function execute(): ExecutorResult
     {
         try {
-            $this->filesystem->createDir('docker/php-fpm');
-            $stub = $this->filesystem->compileStub($this->config->getDockposerDir() . '/stubs/dockerfile-php-fpm.stub');
-            $this->filesystem->put(self::DOCKER_NGINX_DOCKERFILE, $stub);
+            $this->filesystem->createDir(self::DOCKER_DIRECTORY);
         } catch (\Exception $exception) {
-            return new ExecutorResult('Unable to create php-fpm dockerfile, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
+            return new ExecutorResult('Unable to create docker directory, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-        return new ExecutorResult('Added php-fpm Dockerfile at ' . self::DOCKER_NGINX_DOCKERFILE, ExecutorStatus::SUCCESS);
+        return new ExecutorResult('Created docker directory, at ' . self::DOCKER_DIRECTORY, ExecutorStatus::SUCCESS);
     }
 
     public function supports(string $context): bool
     {
-        return $context === 'nginx';
+        return $context === 'docker-dir';
     }
 }

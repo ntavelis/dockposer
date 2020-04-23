@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Ntavelis\Dockposer;
 
 use Composer\IO\IOInterface;
-use Ntavelis\Dockposer\Contracts\ExecutorInterface;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
-use Ntavelis\Dockposer\Filesystem\Filesystem;
+use Ntavelis\Dockposer\Enum\ExecutorStatus;
+use Ntavelis\Dockposer\Factory\ExecutorsFactory;
+use Ntavelis\Dockposer\Message\ExecutorResult;
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 
 class DockposerExecutor
@@ -41,31 +42,21 @@ class DockposerExecutor
         $this->io = $io;
     }
 
-    /**
-     * @param ExecutorInterface[] $executors
-     */
-    public function run(array $executors): void
+    public function run(): void
     {
+        $factory = new ExecutorsFactory($this->config, $this->filesystem);
+        $executors = $factory->createDefaultExecutors();
+
         foreach ($executors as $executor) {
-            if($executor->supports('')){
-                $executor->execute();
+
+            $result = $executor->execute();
+
+            if ($result->getStatus() === ExecutorStatus::SUCCESS) {
+                $this->io->write($result->getResult());
+                continue;
             }
+
+            $this->io->writeError($result->getResult());
         }
-        // Create docker dir
-        $this->filesystem->createDir('docker');
-        // Add php pfm dockerfile
-        $this->filesystem->createDir('docker/php-fpm');
-        $stub = file_get_contents($this->config->getDockposerDir() . '/stubs/dockerfile-php-fpm.stub');
-        $this->filesystem->put('docker/php-fpm/Dockerfile', $stub);
-        // Add nginx dockerfile
-        $this->filesystem->createDir('docker/nginx');
-        $stub = file_get_contents($this->config->getDockposerDir() . '/stubs/dockerfile-nginx.stub');
-        $this->filesystem->put('docker/nginx/Dockerfile', $stub);
-        // Add nginx config
-        $stub = file_get_contents($this->config->getDockposerDir() . '/stubs/config-nginx.stub');
-        $this->filesystem->put('docker/nginx/default.conf', $stub);
-        // add docker-compose file to project
-        $stub = file_get_contents($this->config->getDockposerDir() . '/stubs/docker-compose.stub');
-        $this->filesystem->put('docker-compose.yml', $stub);
     }
 }
