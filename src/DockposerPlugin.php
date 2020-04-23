@@ -12,8 +12,9 @@ use Composer\Installer\InstallerEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
-use Ntavelis\Dockposer\Provider\DependenciesProvider;
+use League\Flysystem\Filesystem as LeagueFilesystem;
+use Ntavelis\Dockposer\Filesystem\Filesystem;
+use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 
 class DockposerPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -46,16 +47,15 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
             return (string)$version->getConstraint();
         }, $packages);
 
-        $provider = new DependenciesProvider($dependencies);
+        $provider = new PlatformDependenciesProvider($dependencies);
 
         $baseDir = dirname($this->config->get('vendor-dir'));
         $dockposerDirectory = dirname(__DIR__);
         $adapter = new Local($baseDir);
-        $filesystem = new Filesystem($adapter);
+        $filesystem = new LeagueFilesystem($adapter);
         $config = new DockposerConfig($dockposerDirectory, $baseDir);
-        $executor = new DockposerExecutor($config, $provider, $filesystem);
+        $executor = new DockposerExecutor($config, $provider, new Filesystem($filesystem), $this->io);
         $executor->run();
-        $this->io->write('postDependenciesSolving :D');
     }
 
     public static function getSubscribedEvents()

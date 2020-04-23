@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Unit\Provider;
 
-use Ntavelis\Dockposer\Provider\DependenciesProvider;
+use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 use PHPUnit\Framework\TestCase;
 
-class DependenciesProviderTest extends TestCase
+class PlatformDependenciesProviderTest extends TestCase
 {
     /**
      * @var array
@@ -26,7 +26,7 @@ class DependenciesProviderTest extends TestCase
     ];
 
     /**
-     * @var DependenciesProvider
+     * @var PlatformDependenciesProvider
      */
     private $provider;
 
@@ -34,7 +34,7 @@ class DependenciesProviderTest extends TestCase
     {
         parent::setUp();
 
-        $this->provider = new DependenciesProvider($this->composerDependencies);
+        $this->provider = new PlatformDependenciesProvider($this->composerDependencies);
     }
 
     /** @test */

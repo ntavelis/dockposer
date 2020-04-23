@@ -14,10 +14,6 @@ class DockposerConfig
      * @var string
      */
     private $baseDir;
-    /**
-     * @var string
-     */
-    private $dockerComposeFileName = 'docker-compose.yml';
 
     public function __construct(string $dockposerDir, string $baseDir)
     {
@@ -33,10 +29,5 @@ class DockposerConfig
     public function getBaseDir(): string
     {
         return $this->baseDir;
-    }
-
-    public function getDockerComposeFileName(): string
-    {
-        return $this->dockerComposeFileName;
     }
 }

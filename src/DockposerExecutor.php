@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Ntavelis\Dockposer;
 
-use League\Flysystem\Filesystem;
-use Ntavelis\Dockposer\Provider\DependenciesProvider;
+use Composer\IO\IOInterface;
+use Ntavelis\Dockposer\Filesystem\Filesystem;
+use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 
 class DockposerExecutor
 {
@@ -14,19 +15,28 @@ class DockposerExecutor
      */
     private $config;
     /**
-     * @var DependenciesProvider
+     * @var PlatformDependenciesProvider
      */
     private $dependenciesProvider;
     /**
-     * @var Filesystem @TODO hide this behind an interface
+     * @var Filesystem
      */
     private $filesystem;
+    /**
+     * @var IOInterface
+     */
+    private $io;
 
-    public function __construct(DockposerConfig $config, DependenciesProvider $dependenciesProvider, Filesystem $filesystem)
-    {
+    public function __construct(
+        DockposerConfig $config,
+        PlatformDependenciesProvider $dependenciesProvider,
+        Filesystem $filesystem,
+        IOInterface $io
+    ) {
         $this->config = $config;
         $this->dependenciesProvider = $dependenciesProvider;
         $this->filesystem = $filesystem;
+        $this->io = $io;
     }
 
     public function run()

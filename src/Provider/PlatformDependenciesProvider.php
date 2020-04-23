@@ -8,7 +8,7 @@ use Ntavelis\Dockposer\Enum\ComposerDependencies;
 use Ntavelis\Dockposer\Enum\ComposerVersionIndexes;
 use Ntavelis\Dockposer\Utils\Helpers;
 
-class DependenciesProvider
+class PlatformDependenciesProvider
 {
     /**
      * @var array

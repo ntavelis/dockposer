@@ -18,7 +18,7 @@ class DockerExecutorTest extends TestCase
     {
         parent::setUp();
 
-        $this->executor = new DockposerExecutor();
+//        $this->executor = new DockposerExecutor();
     }
 
     /** @test */
