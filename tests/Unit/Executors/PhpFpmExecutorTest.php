@@ -63,4 +63,15 @@ class PhpFpmExecutorTest extends TestCase
 
         $this->assertFalse($bool);
     }
+
+    /** @test */
+    public function ifThereIsAFilesystemErrorWeAbortWithAppropriateMessage(): void
+    {
+        $this->filesystem->expects($this->once())->method('compileStub')->willThrowException(new \RuntimeException('can not read file'));
+
+        $result = $this->executor->execute();
+
+        $this->assertSame('Unable to create php-fpm dockerfile, reason: can not read file', $result->getResult());
+        $this->assertSame(ExecutorStatus::FAIL, $result->getStatus());
+    }
 }

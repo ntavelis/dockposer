@@ -61,4 +61,15 @@ class DockerDirectoryExecutorTest extends TestCase
 
         $this->assertFalse($bool);
     }
+
+    /** @test */
+    public function ifThereIsAFilesystemErrorWeAbortWithAppropriateMessage(): void
+    {
+        $this->filesystem->expects($this->once())->method('createDir')->willThrowException(new \RuntimeException('directory already exists'));
+
+        $result = $this->executor->execute();
+
+        $this->assertSame('Unable to create docker directory, reason: directory already exists', $result->getResult());
+        $this->assertSame(ExecutorStatus::FAIL, $result->getStatus());
+    }
 }
