@@ -11,8 +11,8 @@
     ],
     "require": {
         "php": "^7.2",
-        "ext-curl": "*",
-        "composer-plugin-api": "^1.1"
+        "composer-plugin-api": "^1.1",
+        "league/flysystem": "^1.0.67"
     },
     "require-dev": {
         "composer/composer": "^1.1.3",

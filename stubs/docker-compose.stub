@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+    php-fpm:
+        build:
+            context: .
+            dockerfile: ./docker/php-fpm/Dockerfile
+        restart: unless-stopped
+        tty: true
+        working_dir: /srv/app
+        volumes:
+            - .:/srv/app
+    nginx:
+        build:
+            context: .
+            dockerfile: ./docker/nginx/Dockerfile
+            args:
+                php_fpm_dns: php-fpm
+        ports:
+            - 80:80
+        restart: unless-stopped
+        tty: true
+        working_dir: /srv/app
+        volumes:
+            - .:/srv/app

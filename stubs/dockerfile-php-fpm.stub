@@ -1,0 +1,4 @@
+FROM php:{{php_version}}-fpm
+
+# Copy project files inside the container
+COPY . /srv/app
