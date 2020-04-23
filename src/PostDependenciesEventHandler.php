@@ -48,14 +48,27 @@ class PostDependenciesEventHandler
 
         foreach ($executors as $executor) {
 
+            if (!$executor->shouldExecute()) {
+                continue;
+            }
+
             $result = $executor->execute();
 
             if ($result->getStatus() === ExecutorStatus::SUCCESS) {
-                $this->io->write($result->getResult());
+                $this->writeSuccess($result->getResult());
                 continue;
             }
 
             $this->io->writeError($result->getResult());
         }
+    }
+
+    /**
+     * In order to display a success message we need to use the write error function.
+     * Composer kept the interface like that, probably for backwards compatibility
+     */
+    private function writeSuccess(string $message): void
+    {
+        $this->io->writeError('<info>' . $message . '<info>');
     }
 }

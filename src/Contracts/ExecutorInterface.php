@@ -10,5 +10,5 @@ interface ExecutorInterface
 {
     public function execute(): ExecutorResult;
 
-    public function supports(string $context): bool;
+    public function shouldExecute(array $context = []): bool;
 }

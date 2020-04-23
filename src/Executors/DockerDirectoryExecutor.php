@@ -35,11 +35,11 @@ class DockerDirectoryExecutor implements ExecutorInterface
         } catch (\Exception $exception) {
             return new ExecutorResult('Unable to create docker directory, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-        return new ExecutorResult('Created docker directory, at ' . self::DOCKER_DIRECTORY, ExecutorStatus::SUCCESS);
+        return new ExecutorResult('Created docker directory, at `' . self::DOCKER_DIRECTORY . '`', ExecutorStatus::SUCCESS);
     }
 
-    public function supports(string $context): bool
+    public function shouldExecute(array $context = []): bool
     {
-        return $context === 'docker-dir';
+        return !is_dir($this->config->getBaseDir() . DIRECTORY_SEPARATOR . self::DOCKER_DIRECTORY);
     }
 }

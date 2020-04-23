@@ -31,16 +31,16 @@ class DockerComposeExecutor implements ExecutorInterface
     public function execute(): ExecutorResult
     {
         try {
-            $stub = $this->filesystem->compileStub($this->config->getDockposerDir() . '/stubs/dockerfile-php-fpm.stub');
-            $this->filesystem->put('docker-compose.yml', $stub);
+            $stub = $this->filesystem->compileStub($this->config->getDockposerDir() . '/stubs/docker-compose.stub');
+            $this->filesystem->put(self::DOCKER_COMPOSE_FILE, $stub);
         } catch (\Exception $exception) {
             return new ExecutorResult('Unable to create ' . self::DOCKER_COMPOSE_FILE . ' file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
         return new ExecutorResult('Created ' . self::DOCKER_COMPOSE_FILE . ', at ' . self::DOCKER_COMPOSE_FILE, ExecutorStatus::SUCCESS);
     }
 
-    public function supports(string $context): bool
+    public function shouldExecute(array $context = []): bool
     {
-        return $context === 'docker-compose';
+        return !file_exists($this->config->getBaseDir() . DIRECTORY_SEPARATOR . self::DOCKER_COMPOSE_FILE);
     }
 }
