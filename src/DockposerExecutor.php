@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Ntavelis\Dockposer;
 
 use Composer\IO\IOInterface;
+use Ntavelis\Dockposer\Contracts\ExecutorInterface;
+use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\Filesystem\Filesystem;
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 
@@ -17,9 +19,9 @@ class DockposerExecutor
     /**
      * @var PlatformDependenciesProvider
      */
-    private $dependenciesProvider;
+    private $platformDependenciesProvider;
     /**
-     * @var Filesystem
+     * @var FilesystemInterface
      */
     private $filesystem;
     /**
@@ -29,18 +31,26 @@ class DockposerExecutor
 
     public function __construct(
         DockposerConfig $config,
-        PlatformDependenciesProvider $dependenciesProvider,
-        Filesystem $filesystem,
+        PlatformDependenciesProvider $platformDependenciesProvider,
+        FilesystemInterface $filesystem,
         IOInterface $io
     ) {
         $this->config = $config;
-        $this->dependenciesProvider = $dependenciesProvider;
+        $this->platformDependenciesProvider = $platformDependenciesProvider;
         $this->filesystem = $filesystem;
         $this->io = $io;
     }
 
-    public function run()
+    /**
+     * @param ExecutorInterface[] $executors
+     */
+    public function run(array $executors): void
     {
+        foreach ($executors as $executor) {
+            if($executor->supports('')){
+                $executor->execute();
+            }
+        }
         // Create docker dir
         $this->filesystem->createDir('docker');
         // Add php pfm dockerfile
