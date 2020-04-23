@@ -8,7 +8,6 @@ use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
 use Ntavelis\Dockposer\Executors\DockerDirectoryExecutor;
-use Ntavelis\Dockposer\Message\ExecutorResult;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -52,7 +51,10 @@ class DockerDirectoryExecutorTest extends TestCase
     /** @test */
     public function ifTheDirectoryDoesExistItWillReturnFalseWhenAskedIfItShouldBeExecuted(): void
     {
-        $config = new DockposerConfig(__DIR__, __DIR__);
+        // Give it a directory that exists
+        $config = new DockposerConfig(__DIR__, dirname(__DIR__), [
+            'docker_dir' => 'Executors',
+        ]);
         $executor = new DockerDirectoryExecutor($this->filesystem, $config);
 
         $bool = $executor->shouldExecute();

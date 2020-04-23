@@ -12,7 +12,6 @@ use Ntavelis\Dockposer\Message\ExecutorResult;
 
 class DockerDirectoryExecutor implements ExecutorInterface
 {
-    private const DOCKER_DIRECTORY = 'docker';
     /**
      * @var FilesystemInterface
      */
@@ -30,16 +29,17 @@ class DockerDirectoryExecutor implements ExecutorInterface
 
     public function execute(): ExecutorResult
     {
+        $dockerDirName = $this->config->getExecutorConfig('docker_dir');
         try {
-            $this->filesystem->createDir(self::DOCKER_DIRECTORY);
+            $this->filesystem->createDir($dockerDirName);
         } catch (\Exception $exception) {
             return new ExecutorResult('Unable to create docker directory, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-        return new ExecutorResult('Created docker directory, at ./' . self::DOCKER_DIRECTORY, ExecutorStatus::SUCCESS);
+        return new ExecutorResult('Created docker directory, at ./' . $dockerDirName, ExecutorStatus::SUCCESS);
     }
 
     public function shouldExecute(array $context = []): bool
     {
-        return !is_dir($this->config->getBaseDir() . DIRECTORY_SEPARATOR . self::DOCKER_DIRECTORY);
+        return !is_dir($this->config->getBaseDir() . DIRECTORY_SEPARATOR . $this->config->getExecutorConfig('docker_dir'));
     }
 }

@@ -12,8 +12,6 @@ use Ntavelis\Dockposer\Message\ExecutorResult;
 
 class NginxExecutor implements ExecutorInterface
 {
-    private const NGINX_DOCKER_DIR = 'docker/nginx';
-    private const DOCKER_NGINX_DOCKERFILE = 'Dockerfile';
     /**
      * @var FilesystemInterface
      */
@@ -31,8 +29,9 @@ class NginxExecutor implements ExecutorInterface
 
     public function execute(): ExecutorResult
     {
+        $dockerNginxDir = $this->config->getExecutorConfig('docker_dir') . $this->config->getExecutorConfig('nginx_docker_dir');
         try {
-            $this->filesystem->createDir(self::NGINX_DOCKER_DIR);
+            $this->filesystem->createDir($dockerNginxDir);
             $stub = $this->filesystem->compileStub($this->config->getDockposerDir() . '/stubs/dockerfile-nginx.stub');
             $this->filesystem->put($this->getNginxDockerfilePath(), $stub);
         } catch (\Exception $exception) {
@@ -48,6 +47,8 @@ class NginxExecutor implements ExecutorInterface
 
     private function getNginxDockerfilePath(): string
     {
-        return self::NGINX_DOCKER_DIR . DIRECTORY_SEPARATOR . self::DOCKER_NGINX_DOCKERFILE;
+        return $this->config->getExecutorConfig('docker_dir') . $this->config->getExecutorConfig('nginx_docker_dir')
+            . DIRECTORY_SEPARATOR .
+            $this->config->getExecutorConfig('dockerfile_name');
     }
 }
