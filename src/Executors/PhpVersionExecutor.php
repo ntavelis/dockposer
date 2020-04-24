@@ -48,8 +48,8 @@ class PhpVersionExecutor implements ExecutorInterface
             if ($this->isFileMarked($phpFpmDockerfileContents)) {
                 $buildTemplate = str_replace('{{php_version}}', $this->platformDependenciesProvider->getPhpVersion(), self::TEMPLATE);
                 $content = $this->wrapInMarks($buildTemplate);
-                $result = $this->updateData($phpFpmDockerfileContents, $content, $this->config->getPathResolver()->getPhpFpmDockerfilePath());
-
+                $newFileContents = $this->updateData($phpFpmDockerfileContents, $content);
+                $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $newFileContents);
                 // TODO is it possible to detect the current version and not perform replacement in case they are teh same ?
             }
         } catch (FileNotFoundException| UnableToPutContentsToFile $exception) {
@@ -57,11 +57,14 @@ class PhpVersionExecutor implements ExecutorInterface
         }
 
         // Memory cleanup
-        if (isset($phpFpmDockerfileContents)) {
-            unset($phpFpmDockerfileContents);
-        }
+        unset($phpFpmDockerfileContents, $newFileContents);
 
         return new ExecutorResult("Replaced php version in php-fpm dockerfile ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
+    }
+
+    public function shouldExecute(array $context = []): bool
+    {
+        return $this->filesystem->fileExists($this->config->getPathResolver()->getPhpFpmDockerfilePath());
     }
 
     private function isFileMarked(string $fileContents): bool
@@ -79,29 +82,17 @@ class PhpVersionExecutor implements ExecutorInterface
         return $content;
     }
 
-    /**
-     * @throws UnableToPutContentsToFile
-     * @return bool True if section was found and replaced
-     */
-    private function updateData(string $fileContents, string $data, string $filePath): bool
+    private function updateData(string $fileContents, string $data): string
     {
         $pieces = explode("\n", trim($data));
         $startMark = trim(reset($pieces));
         $endMark = trim(end($pieces));
 
         if (false === strpos($fileContents, $startMark) || false === strpos($fileContents, $endMark)) {
-            return false;
+            return $fileContents;
         }
 
         $pattern = '/' . preg_quote($startMark, '/') . '.*?' . preg_quote($endMark, '/') . '/s';
-        $newContents = preg_replace($pattern, trim($data), $fileContents);
-        $this->filesystem->put($filePath, $newContents);
-
-        return true;
-    }
-
-    public function shouldExecute(array $context = []): bool
-    {
-        return $this->filesystem->fileExists($this->config->getPathResolver()->getPhpFpmDockerfilePath());
+        return preg_replace($pattern, trim($data), $fileContents);
     }
 }
