@@ -6,7 +6,7 @@ ARG php_fpm_dns='localhost'
 COPY . /srv/app
 
 # Override nginx's default config
-ADD .{{nginx_config_file}} /etc/nginx/conf.d/default.conf
+ADD ./{{nginx_config_file}} /etc/nginx/conf.d/default.conf
 # Give the php-fpm dns to the nginx config so that it can find php fpm container
 RUN sed -i -e "s/{php-fpm-dns}/$php_fpm_dns/g" /etc/nginx/conf.d/default.conf
 
