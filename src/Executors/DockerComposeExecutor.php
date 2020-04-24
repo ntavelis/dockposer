@@ -34,8 +34,8 @@ class DockerComposeExecutor implements ExecutorInterface
         $dockerComposeFile = $this->config->getExecutorConfig('docker_compose_file');
         try {
             $stub = $this->filesystem->compileStub($this->config->getPathResolver()->getStubsDirPath() . DIRECTORY_SEPARATOR . 'docker-compose.stub');
-            // TODO replace docker, nginx docker, php-fpm cocker paths with the values from the config
-            $this->filesystem->put($dockerComposeFile, $stub);
+            $replacedStub = str_replace($this->replaceKeys(), $this->replaceValues(), $stub);
+            $this->filesystem->put($dockerComposeFile, $replacedStub);
         } catch (FileNotFoundException | UnableToPutContentsToFile $exception) {
             return new ExecutorResult('Unable to create ' . $dockerComposeFile . ' file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
@@ -45,5 +45,31 @@ class DockerComposeExecutor implements ExecutorInterface
     public function shouldExecute(array $context = []): bool
     {
         return !$this->filesystem->fileExists($this->config->getPathResolver()->getDockerComposeFilePath());
+    }
+
+    /**
+     * @return string[]
+     */
+    private function replaceKeys(): array
+    {
+        return [
+            '{{docker_dir}}',
+            '{{fpm_docker_dir}}',
+            '{{nginx_docker_dir}}',
+            '{{dockerfile_name}}',
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    private function replaceValues(): array
+    {
+        return [
+            $this->config->getExecutorConfig('docker_dir'),
+            $this->config->getExecutorConfig('fpm_docker_dir'),
+            $this->config->getExecutorConfig('nginx_docker_dir'),
+            $this->config->getExecutorConfig('dockerfile_name'),
+        ];
     }
 }

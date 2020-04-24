@@ -3,7 +3,7 @@ services:
     php-fpm:
         build:
             context: .
-            dockerfile: ./docker/php-fpm/Dockerfile
+            dockerfile: ./{{docker_dir}}/{{fpm_docker_dir}}/{{dockerfile_name}}
         restart: unless-stopped
         tty: true
         working_dir: /srv/app
@@ -12,7 +12,7 @@ services:
     nginx:
         build:
             context: .
-            dockerfile: ./docker/nginx/Dockerfile
+            dockerfile: ./{{docker_dir}}/{{nginx_docker_dir}}/{{dockerfile_name}}
             args:
                 php_fpm_dns: php-fpm
         ports:

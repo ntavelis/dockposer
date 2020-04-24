@@ -35,6 +35,20 @@ class DockerComposeExecutorTest extends TestCase
     /** @test */
     public function itWillCreateADockerComposeFile(): void
     {
+        $this->filesystem->expects($this->once())->method('compileStub');
+        $this->filesystem->expects($this->once())->method('put');
+        $result = $this->executor->execute();
+
+        $this->assertSame('Added docker-compose file, at ./docker-compose.yml', $result->getResult());
+        $this->assertSame(ExecutorStatus::SUCCESS, $result->getStatus());
+    }
+
+    /** @test */
+    public function itWillReplaceAllTheDynamicVariablesWithValuesFromConfiguration(): void
+    {
+        $this->filesystem->expects($this->once())->method('compileStub')->willReturn('{{docker_dir}} {{fpm_docker_dir}} {{nginx_docker_dir}} {{dockerfile_name}}');
+        // Indicates that the value, has been replaced e.g with {{docker_dir}}
+        $this->filesystem->expects($this->once())->method('put')->with('docker-compose.yml', 'docker php-fpm nginx Dockerfile');
         $result = $this->executor->execute();
 
         $this->assertSame('Added docker-compose file, at ./docker-compose.yml', $result->getResult());
