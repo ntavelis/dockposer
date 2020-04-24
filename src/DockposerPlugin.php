@@ -50,8 +50,8 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
 
         $baseDir = dirname($this->config->get('vendor-dir'));
         $dockposerDirectory = dirname(__DIR__);
-        // TODO pass overrides to the DockposerConfig from composer.json extra section, if there are any
-        $config = new DockposerConfig($dockposerDirectory, $baseDir);
+        $extra = $this->composer->getPackage()->getExtra();
+        $config = new DockposerConfig($dockposerDirectory, $extra['dockposer'] ?? []);
         $executorsFactory = new ExecutorsFactory($config, new Filesystem($baseDir), $provider);
         $handler = new PostDependenciesEventHandler($this->io, $executorsFactory);
         $handler->run();
