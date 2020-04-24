@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ntavelis\Dockposer;
 
+use Ntavelis\Dockposer\Utils\PathsResolver;
+
 class DockposerConfig
 {
     /**
@@ -14,7 +16,6 @@ class DockposerConfig
      * @var string
      */
     private $baseDir;
-
     /**
      * @var array
      */
@@ -25,17 +26,21 @@ class DockposerConfig
         'fpm_docker_dir' => 'php-fpm',
         'dockerfile_name' => 'Dockerfile',
     ];
-
     /**
      * @var array
      */
     private $executorConfig;
+    /**
+     * @var PathsResolver
+     */
+    private $pathResolver;
 
     public function __construct(string $dockposerDir, string $baseDir, array $configOverrides = [])
     {
         $this->dockposerDir = $dockposerDir;
         $this->baseDir = $baseDir;
         $this->executorConfig = array_merge($this->executorsDefaultConfig, $configOverrides);
+        $this->pathResolver = new PathsResolver($this);
     }
 
     public function getDockposerDir(): string
@@ -53,5 +58,8 @@ class DockposerConfig
         return $this->executorConfig[$configKey] ?? null;
     }
 
-
+    public function getPathResolver(): PathsResolver
+    {
+        return $this->pathResolver;
+    }
 }

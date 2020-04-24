@@ -8,6 +8,8 @@ use Ntavelis\Dockposer\Contracts\ExecutorInterface;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
+use Ntavelis\Dockposer\Exception\FileNotFoundException;
+use Ntavelis\Dockposer\Exception\UnableToPutContentsToFile;
 use Ntavelis\Dockposer\Message\ExecutorResult;
 
 class DockerComposeExecutor implements ExecutorInterface
@@ -31,9 +33,9 @@ class DockerComposeExecutor implements ExecutorInterface
     {
         $dockerComposeFile = $this->config->getExecutorConfig('docker_compose_file');
         try {
-            $stub = $this->filesystem->compileStub($this->config->getDockposerDir() . '/stubs/docker-compose.stub');
+            $stub = $this->filesystem->compileStub($this->config->getPathResolver()->getStubsDirPath() . 'docker-compose.stub');
             $this->filesystem->put($dockerComposeFile, $stub);
-        } catch (\Exception $exception) {
+        } catch (FileNotFoundException | UnableToPutContentsToFile $exception) {
             return new ExecutorResult('Unable to create ' . $dockerComposeFile . ' file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
         return new ExecutorResult('Added docker-compose file, at ./' . $dockerComposeFile, ExecutorStatus::SUCCESS);
@@ -41,6 +43,6 @@ class DockerComposeExecutor implements ExecutorInterface
 
     public function shouldExecute(array $context = []): bool
     {
-        return !file_exists($this->config->getBaseDir() . DIRECTORY_SEPARATOR . $this->config->getExecutorConfig('docker_compose_file'));
+        return !$this->filesystem->fileExists($this->config->getPathResolver()->getDockerComposeFilePath());
     }
 }

@@ -50,25 +50,35 @@ class Filesystem implements FilesystemInterface
     /**
      * @throws FileNotFoundException
      */
-    public function compileStub(string $stubPath): string
+    public function compileStub(string $absolutePathToStub): string
     {
-        $this->fileExists($stubPath);
+        if (!file_exists($absolutePathToStub)) {
+            throw new FileNotFoundException("Unable to locate file {$absolutePathToStub}, make sure you use absolute path to file.");
+        }
 
-        return file_get_contents($stubPath) ?? '';
+        return file_get_contents($absolutePathToStub) ?? '';
     }
 
-    public function applyPathPrefix(string $path): string
+    public function fileExists(string $filePath): bool
+    {
+        $location = $this->applyPathPrefix($filePath);
+        if (!file_exists($location)) {
+            return false;
+        }
+        return true;
+    }
+
+    public function dirExists(string $dirPath): bool
+    {
+        $location = $this->applyPathPrefix($dirPath);
+        if (!is_dir($location)) {
+            return false;
+        }
+        return true;
+    }
+
+    private function applyPathPrefix(string $path): string
     {
         return $this->pathPrefix . DIRECTORY_SEPARATOR . ltrim($path, '\\/');
-    }
-
-    /**
-     * @throws FileNotFoundException
-     */
-    private function fileExists(string $filePath): void
-    {
-        if (!file_exists($filePath)) {
-            throw new FileNotFoundException('Unable to locate file ' . $filePath);
-        }
     }
 }

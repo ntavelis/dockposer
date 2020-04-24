@@ -46,14 +46,14 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
             return (string)$version->getConstraint();
         }, $packages);
 
-        // TODO use this in the factory with an executor that will resolve php extensions
         $provider = new PlatformDependenciesProvider($dependencies);
 
         $baseDir = dirname($this->config->get('vendor-dir'));
         $dockposerDirectory = dirname(__DIR__);
         // TODO pass overrides to the DockposerConfig from composer.json extra section, if there are any
         $config = new DockposerConfig($dockposerDirectory, $baseDir);
-        $handler = new PostDependenciesEventHandler($this->io, new ExecutorsFactory($config, new Filesystem($baseDir)));
+        $executorsFactory = new ExecutorsFactory($config, new Filesystem($baseDir), $provider);
+        $handler = new PostDependenciesEventHandler($this->io, $executorsFactory);
         $handler->run();
     }
 

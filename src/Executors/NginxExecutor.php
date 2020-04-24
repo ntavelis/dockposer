@@ -8,6 +8,9 @@ use Ntavelis\Dockposer\Contracts\ExecutorInterface;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
+use Ntavelis\Dockposer\Exception\FileNotFoundException;
+use Ntavelis\Dockposer\Exception\UnableToCreateDirectory;
+use Ntavelis\Dockposer\Exception\UnableToPutContentsToFile;
 use Ntavelis\Dockposer\Message\ExecutorResult;
 
 class NginxExecutor implements ExecutorInterface
@@ -30,27 +33,17 @@ class NginxExecutor implements ExecutorInterface
     public function execute(): ExecutorResult
     {
         try {
-            $this->filesystem->createDir($this->getDockerNginxDir());
-            $stub = $this->filesystem->compileStub($this->config->getDockposerDir() . '/stubs/dockerfile-nginx.stub');
-            $this->filesystem->put($this->getNginxDockerfilePath(), $stub);
-        } catch (\Exception $exception) {
+            $this->filesystem->createDir($this->config->getPathResolver()->getNginxDockerDirPath());
+            $stub = $this->filesystem->compileStub($this->config->getPathResolver()->getStubsDirPath() . 'dockerfile-nginx.stub');
+            $this->filesystem->put($this->config->getPathResolver()->getNginxDockerfilePath(), $stub);
+        } catch (FileNotFoundException | UnableToPutContentsToFile | UnableToCreateDirectory $exception) {
             return new ExecutorResult('Unable to create nginx dockerfile, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-        return new ExecutorResult("Added nginx Dockerfile at ./{$this->getNginxDockerfilePath()}", ExecutorStatus::SUCCESS);
+        return new ExecutorResult("Added nginx Dockerfile at ./{$this->config->getPathResolver()->getNginxDockerfilePath()}", ExecutorStatus::SUCCESS);
     }
 
     public function shouldExecute(array $context = []): bool
     {
-        return !file_exists($this->config->getBaseDir() . DIRECTORY_SEPARATOR . $this->getNginxDockerfilePath());
-    }
-
-    private function getNginxDockerfilePath(): string
-    {
-        return $this->getDockerNginxDir() . DIRECTORY_SEPARATOR . $this->config->getExecutorConfig('dockerfile_name');
-    }
-
-    private function getDockerNginxDir(): string
-    {
-        return $this->config->getExecutorConfig('docker_dir') . DIRECTORY_SEPARATOR . $this->config->getExecutorConfig('nginx_docker_dir');
+        return !$this->filesystem->fileExists($this->config->getPathResolver()->getNginxDockerfilePath());
     }
 }

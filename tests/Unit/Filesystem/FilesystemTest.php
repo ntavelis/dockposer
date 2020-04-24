@@ -33,6 +33,13 @@ class FilesystemTest extends TestCase
     }
 
     /** @test */
+    public function theCompileStubPathNeedsAnAbsoluteUrlToBePassed(): void
+    {
+        $this->expectException(FileNotFoundException::class);
+        $this->filesystem->compileStub('/relative/url/to/test.stub');
+    }
+
+    /** @test */
     public function ifTheStubDoesNotExistWeThrowAnException(): void
     {
         $this->expectException(FileNotFoundException::class);
@@ -64,7 +71,7 @@ class FilesystemTest extends TestCase
     {
         $this->expectException(UnableToPutContentsToFile::class);
 
-        $this->filesystem->put('./not-existent-dir/test.txt', 'Now I changed completely!');
+        $this->filesystem->put('./not-existent-dir/test.txt', 'dummy text');
 
         $this->assertFileNotExists('/not-existent-dir/test.txt');
     }
@@ -87,4 +94,17 @@ class FilesystemTest extends TestCase
         $this->filesystem->createDir('test/nested/dir');
     }
 
+    /** @test */
+    public function itCanCheckIfAFileExists()
+    {
+        $this->assertTrue($this->filesystem->fileExists('FilesystemTest.php'));
+        $this->assertFalse($this->filesystem->fileExists('NotExistent.php'));
+    }
+
+    /** @test */
+    public function itCanCheckIfADirExists()
+    {
+        $this->assertTrue($this->filesystem->dirExists('../Filesystem'));
+        $this->assertFalse($this->filesystem->dirExists('not_a_dir'));
+    }
 }

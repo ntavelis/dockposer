@@ -7,6 +7,7 @@ namespace Unit\Executors;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
+use Ntavelis\Dockposer\Exception\UnableToCreateDirectory;
 use Ntavelis\Dockposer\Executors\DockerDirectoryExecutor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -56,6 +57,7 @@ class DockerDirectoryExecutorTest extends TestCase
             'docker_dir' => 'Executors',
         ]);
         $executor = new DockerDirectoryExecutor($this->filesystem, $config);
+        $this->filesystem->expects($this->once())->method('dirExists')->willReturn(true);
 
         $bool = $executor->shouldExecute();
 
@@ -65,7 +67,7 @@ class DockerDirectoryExecutorTest extends TestCase
     /** @test */
     public function ifThereIsAFilesystemErrorWeAbortWithAppropriateMessage(): void
     {
-        $this->filesystem->expects($this->once())->method('createDir')->willThrowException(new \RuntimeException('directory already exists'));
+        $this->filesystem->expects($this->once())->method('createDir')->willThrowException(new UnableToCreateDirectory('directory already exists'));
 
         $result = $this->executor->execute();
 

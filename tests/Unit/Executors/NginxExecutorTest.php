@@ -7,6 +7,7 @@ namespace Unit\Executors;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
+use Ntavelis\Dockposer\Exception\FileNotFoundException;
 use Ntavelis\Dockposer\Executors\NginxExecutor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -58,6 +59,7 @@ class NginxExecutorTest extends TestCase
             'dockerfile_name' => 'NginxExecutorTest.php',
         ]);
         $executor = new NginxExecutor($this->filesystem, $config);
+        $this->filesystem->expects($this->once())->method('fileExists')->willReturn(true);
 
         $bool = $executor->shouldExecute();
 
@@ -67,7 +69,7 @@ class NginxExecutorTest extends TestCase
     /** @test */
     public function ifThereIsAFilesystemErrorWeAbortWithAppropriateMessage(): void
     {
-        $this->filesystem->expects($this->once())->method('compileStub')->willThrowException(new \RuntimeException('can not read file'));
+        $this->filesystem->expects($this->once())->method('compileStub')->willThrowException(new FileNotFoundException('can not read file'));
 
         $result = $this->executor->execute();
 

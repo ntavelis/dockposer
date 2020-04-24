@@ -23,5 +23,9 @@ interface FilesystemInterface
     /**
      * @throws FileNotFoundException
      */
-    public function compileStub(string $stubPath): string;
+    public function compileStub(string $absolutePathToStub): string;
+
+    public function fileExists(string $filePath): bool;
+
+    public function dirExists(string $dirPath): bool;
 }

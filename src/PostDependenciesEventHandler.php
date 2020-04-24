@@ -5,25 +5,11 @@ declare(strict_types=1);
 namespace Ntavelis\Dockposer;
 
 use Composer\IO\IOInterface;
-use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
 use Ntavelis\Dockposer\Factory\ExecutorsFactory;
-use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 
 class PostDependenciesEventHandler
 {
-    /**
-     * @var DockposerConfig
-     */
-    private $config;
-    /**
-     * @var PlatformDependenciesProvider
-     */
-    private $platformDependenciesProvider;
-    /**
-     * @var FilesystemInterface
-     */
-    private $filesystem;
     /**
      * @var IOInterface
      */

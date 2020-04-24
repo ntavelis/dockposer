@@ -8,6 +8,9 @@ use Ntavelis\Dockposer\Contracts\ExecutorInterface;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
+use Ntavelis\Dockposer\Exception\FileNotFoundException;
+use Ntavelis\Dockposer\Exception\UnableToCreateDirectory;
+use Ntavelis\Dockposer\Exception\UnableToPutContentsToFile;
 use Ntavelis\Dockposer\Message\ExecutorResult;
 
 class PhpFpmExecutor implements ExecutorInterface
@@ -30,27 +33,17 @@ class PhpFpmExecutor implements ExecutorInterface
     public function execute(): ExecutorResult
     {
         try {
-            $this->filesystem->createDir($this->getDockerPhpFpmDir());
+            $this->filesystem->createDir($this->config->getPathResolver()->getPhpFpmDockerDirPath());
             $stub = $this->filesystem->compileStub($this->config->getDockposerDir() . '/stubs/dockerfile-php-fpm.stub');
-            $this->filesystem->put($this->getPhpFPMDockerfilePath(), $stub);
-        } catch (\Exception $exception) {
+            $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $stub);
+        } catch (FileNotFoundException | UnableToPutContentsToFile | UnableToCreateDirectory $exception) {
             return new ExecutorResult('Unable to create php-fpm dockerfile, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-        return new ExecutorResult("Added php-fpm Dockerfile at ./{$this->getPhpFPMDockerfilePath()}", ExecutorStatus::SUCCESS);
+        return new ExecutorResult("Added php-fpm Dockerfile at ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
     }
 
     public function shouldExecute(array $context = []): bool
     {
-        return !file_exists($this->config->getBaseDir() . DIRECTORY_SEPARATOR . $this->getPhpFPMDockerfilePath());
-    }
-
-    private function getPhpFPMDockerfilePath(): string
-    {
-        return $this->getDockerPhpFpmDir() . DIRECTORY_SEPARATOR . $this->config->getExecutorConfig('dockerfile_name');
-    }
-
-    private function getDockerPhpFpmDir(): string
-    {
-        return $this->config->getExecutorConfig('docker_dir') . DIRECTORY_SEPARATOR . $this->config->getExecutorConfig('fpm_docker_dir');
+        return !$this->filesystem->fileExists($this->config->getPathResolver()->getPhpFpmDockerfilePath());
     }
 }
