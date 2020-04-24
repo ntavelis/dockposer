@@ -12,6 +12,7 @@ use Ntavelis\Dockposer\Exception\FileNotFoundException;
 use Ntavelis\Dockposer\Exception\UnableToPutContentsToFile;
 use Ntavelis\Dockposer\Message\ExecutorResult;
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
+use Ntavelis\Dockposer\Utils\FileMarker;
 
 class PhpVersionExecutor implements ExecutorInterface
 {
@@ -29,6 +30,10 @@ class PhpVersionExecutor implements ExecutorInterface
      * @var PlatformDependenciesProvider
      */
     private $platformDependenciesProvider;
+    /**
+     * @var FileMarker
+     */
+    private $marker;
 
     public function __construct(
         FilesystemInterface $filesystem,
@@ -38,6 +43,7 @@ class PhpVersionExecutor implements ExecutorInterface
         $this->filesystem = $filesystem;
         $this->config = $config;
         $this->platformDependenciesProvider = $platformDependenciesProvider;
+        $this->marker = new FileMarker(self::CONFIG_MARKER);
     }
 
     public function execute(): ExecutorResult
@@ -45,10 +51,10 @@ class PhpVersionExecutor implements ExecutorInterface
         try {
             $initialFileContents = $this->filesystem->readFile($this->config->getPathResolver()->getPhpFpmDockerfilePath());
 
-            if ($this->isFileMarked($initialFileContents)) {
+            if ($this->marker->isFileMarked($initialFileContents)) {
                 $buildTemplate = str_replace('{{php_version}}', $this->platformDependenciesProvider->getPhpVersion(), self::TEMPLATE);
-                $content = $this->wrapInMarks($buildTemplate);
-                $newFileContents = $this->updateData($initialFileContents, $content);
+                $content = $this->marker->wrapInMarks($buildTemplate);
+                $newFileContents = $this->marker->updateMarkedData($initialFileContents, $content);
                 if ($initialFileContents === $newFileContents) {
                     return new ExecutorResult('Nothing to update', ExecutorStatus::SKIPPED);
                 }
@@ -67,34 +73,5 @@ class PhpVersionExecutor implements ExecutorInterface
     public function shouldExecute(array $context = []): bool
     {
         return $this->filesystem->fileExists($this->config->getPathResolver()->getPhpFpmDockerfilePath());
-    }
-
-    private function isFileMarked(string $fileContents): bool
-    {
-        return false !== strpos($fileContents, sprintf('###> %s ###', self::CONFIG_MARKER));
-    }
-
-    private function wrapInMarks(string $buildTemplate): string
-    {
-        $marker = sprintf('###> %s ###', self::CONFIG_MARKER);
-        $content = $marker . "\n";
-        $content .= $buildTemplate . "\n";
-        $content .= $marker . "\n";
-
-        return $content;
-    }
-
-    private function updateData(string $fileContents, string $data): string
-    {
-        $pieces = explode("\n", trim($data));
-        $startMark = trim(reset($pieces));
-        $endMark = trim(end($pieces));
-
-        if (false === strpos($fileContents, $startMark) || false === strpos($fileContents, $endMark)) {
-            return $fileContents;
-        }
-
-        $pattern = '/' . preg_quote($startMark, '/') . '.*?' . preg_quote($endMark, '/') . '/s';
-        return preg_replace($pattern, trim($data), $fileContents);
     }
 }
