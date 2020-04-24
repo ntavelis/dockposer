@@ -43,21 +43,23 @@ class PhpVersionExecutor implements ExecutorInterface
     public function execute(): ExecutorResult
     {
         try {
-            $phpFpmDockerfileContents = $this->filesystem->readFile($this->config->getPathResolver()->getPhpFpmDockerfilePath());
+            $initialFileContents = $this->filesystem->readFile($this->config->getPathResolver()->getPhpFpmDockerfilePath());
 
-            if ($this->isFileMarked($phpFpmDockerfileContents)) {
+            if ($this->isFileMarked($initialFileContents)) {
                 $buildTemplate = str_replace('{{php_version}}', $this->platformDependenciesProvider->getPhpVersion(), self::TEMPLATE);
                 $content = $this->wrapInMarks($buildTemplate);
-                $newFileContents = $this->updateData($phpFpmDockerfileContents, $content);
+                $newFileContents = $this->updateData($initialFileContents, $content);
+                if ($initialFileContents === $newFileContents) {
+                    return new ExecutorResult('Nothing to update', ExecutorStatus::SKIPPED);
+                }
                 $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $newFileContents);
-                // TODO is it possible to detect the current version and not perform replacement in case they are teh same ?
             }
         } catch (FileNotFoundException| UnableToPutContentsToFile $exception) {
             return new ExecutorResult('Unable to replace php version in php-fpm docker file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
 
         // Memory cleanup
-        unset($phpFpmDockerfileContents, $newFileContents);
+        unset($initialFileContents, $newFileContents);
 
         return new ExecutorResult("Replaced php version in php-fpm dockerfile ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
     }
