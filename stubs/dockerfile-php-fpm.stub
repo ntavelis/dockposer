@@ -1,4 +1,6 @@
+###> ntavelis/dockposer/php-docker-image ###
 FROM php:{{php_version}}-fpm
+###> ntavelis/dockposer/php-docker-image ###
 
 # Copy project files inside the container
 COPY . /srv/app
