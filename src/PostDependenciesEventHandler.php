@@ -42,6 +42,8 @@ class PostDependenciesEventHandler
             if ($result->getStatus() === ExecutorStatus::SUCCESS) {
                 $this->writeSuccess($result->getResult());
                 continue;
+            } elseif ($result->getStatus() === ExecutorStatus::SKIPPED) {
+                continue;
             }
 
             $this->io->writeError($result->getResult());

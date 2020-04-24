@@ -8,4 +8,5 @@ class ExecutorStatus
 {
     public const SUCCESS = 'success';
     public const FAIL = 'fail';
+    public const SKIPPED = 'skipped';
 }
