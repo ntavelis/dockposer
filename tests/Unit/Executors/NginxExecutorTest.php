@@ -76,4 +76,16 @@ class NginxExecutorTest extends TestCase
         $this->assertSame('Unable to create nginx dockerfile, reason: can not read file', $result->getResult());
         $this->assertSame(ExecutorStatus::FAIL, $result->getStatus());
     }
+
+    /** @test */
+    public function itWillReplaceAllTheDynamicVariablesWithValuesFromConfiguration(): void
+    {
+        $this->filesystem->expects($this->once())->method('compileStub')->willReturn('./{{nginx_config_file}}');
+        // Indicates that the value, has been replaced e.g with {{docker_dir}}
+        $this->filesystem->expects($this->once())->method('put')->with('docker/nginx/Dockerfile', './docker/nginx/default.conf');
+        $result = $this->executor->execute();
+
+        $this->assertSame('Added nginx Dockerfile at ./docker/nginx/Dockerfile', $result->getResult());
+        $this->assertSame(ExecutorStatus::SUCCESS, $result->getStatus());
+    }
 }
