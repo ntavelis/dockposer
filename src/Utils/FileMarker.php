@@ -26,7 +26,7 @@ class FileMarker
         $marker = sprintf('###> %s ###', $this->markerName);
         $content = $marker . "\n";
         $content .= $buildTemplate . "\n";
-        $content .= $marker . "\n";
+        $content .= $marker;
 
         return $content;
     }
