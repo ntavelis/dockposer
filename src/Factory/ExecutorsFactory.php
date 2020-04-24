@@ -9,6 +9,7 @@ use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
 use Ntavelis\Dockposer\Executors\DockerComposeExecutor;
 use Ntavelis\Dockposer\Executors\DockerDirectoryExecutor;
+use Ntavelis\Dockposer\Executors\NginxConfigExecutor;
 use Ntavelis\Dockposer\Executors\NginxExecutor;
 use Ntavelis\Dockposer\Executors\PhpFpmExecutor;
 use Ntavelis\Dockposer\Executors\PhpVersionExecutor;
@@ -48,6 +49,7 @@ class ExecutorsFactory
             new DockerComposeExecutor($this->filesystem, $this->config),
             new DockerDirectoryExecutor($this->filesystem, $this->config),
             new NginxExecutor($this->filesystem, $this->config),
+            new NginxConfigExecutor($this->filesystem, $this->config),
             new PhpFpmExecutor($this->filesystem, $this->config),
             new PhpVersionExecutor($this->filesystem, $this->config, $this->platformDependenciesProvider),
         ];

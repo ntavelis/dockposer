@@ -23,6 +23,7 @@ class DockposerConfig
         'docker_compose_file' => 'docker-compose.yml',
         'docker_dir' => 'docker',
         'nginx_docker_dir' => 'nginx',
+        'nginx_config_file' => 'default.conf',
         'fpm_docker_dir' => 'php-fpm',
         'dockerfile_name' => 'Dockerfile',
     ];
