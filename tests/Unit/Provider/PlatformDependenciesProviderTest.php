@@ -56,4 +56,21 @@ class PlatformDependenciesProviderTest extends TestCase
             'iconv',
         ], $dependencies);
     }
+
+    /** @test */
+    public function ifThePhpVersionIsNotSetInTheComposerJsonFileDefaultToTheVersionOfPhpThatExecutesTheComposer(): void
+    {
+        $provider = new PlatformDependenciesProvider([
+            'ext-ctype' => '[]',
+            'ext-iconv' => '[]',
+        ]);
+        $dependencies = $provider->getDependencies();
+
+        $this->assertSame([
+            'ctype',
+            'iconv',
+        ], $dependencies);
+
+        $this->assertNotEmpty($provider->getPhpVersion());
+    }
 }

@@ -29,8 +29,12 @@ class PlatformDependenciesProvider
         return $this->dependencies;
     }
 
-    public function getPhpVersion()
+    public function getPhpVersion(): string
     {
+        if (!isset($this->phpVersion)) {
+            return (string)(float)PHP_VERSION;
+        }
+
         return $this->phpVersion;
     }
 
@@ -52,7 +56,7 @@ class PlatformDependenciesProvider
         return $resolvedDependencies;
     }
 
-    private function resolvePhpVersion(string $version)
+    private function resolvePhpVersion(string $version): void
     {
         $cleanVersionString = str_replace(['-dev', '[', ']'], '', $version);
         $upperLowerVersionsArray = explode(' ', $cleanVersionString);
