@@ -107,4 +107,19 @@ class FilesystemTest extends TestCase
         $this->assertTrue($this->filesystem->dirExists('../Filesystem'));
         $this->assertFalse($this->filesystem->dirExists('not_a_dir'));
     }
+
+    /** @test */
+    public function itCanReadTheContentsOfAFile(): void
+    {
+        $contents = $this->filesystem->readFile('test.stub');
+
+        $this->assertSame('<3 Dockposer', $contents);
+    }
+
+    /** @test */
+    public function itWillThrowAnExceptionIfItCanNotReadAFile(): void
+    {
+        $this->expectException(FileNotFoundException::class);
+        $this->filesystem->readFile('not-existent.stub');
+    }
 }

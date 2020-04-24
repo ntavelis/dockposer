@@ -28,4 +28,9 @@ interface FilesystemInterface
     public function fileExists(string $filePath): bool;
 
     public function dirExists(string $dirPath): bool;
+
+    /**
+     * @throws FileNotFoundException
+     */
+    public function readFile(string $filePath): string;
 }

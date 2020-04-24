@@ -53,7 +53,7 @@ class Filesystem implements FilesystemInterface
     public function compileStub(string $absolutePathToStub): string
     {
         if (!file_exists($absolutePathToStub)) {
-            throw new FileNotFoundException("Unable to locate file {$absolutePathToStub}, make sure you use absolute path to file.");
+            throw new FileNotFoundException('Unable to locate file ' . $absolutePathToStub);
         }
 
         return file_get_contents($absolutePathToStub) ?? '';
@@ -75,6 +75,19 @@ class Filesystem implements FilesystemInterface
             return false;
         }
         return true;
+    }
+
+    /**
+     * @throws FileNotFoundException
+     */
+    public function readFile(string $filePath): string
+    {
+        $location = $this->applyPathPrefix($filePath);
+        if (!$this->fileExists($filePath)) {
+            throw new FileNotFoundException('Unable to locate file ' . $location);
+        }
+
+        return file_get_contents($location) ?? '';
     }
 
     private function applyPathPrefix(string $path): string

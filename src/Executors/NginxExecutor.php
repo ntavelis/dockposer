@@ -34,7 +34,7 @@ class NginxExecutor implements ExecutorInterface
     {
         try {
             $this->filesystem->createDir($this->config->getPathResolver()->getNginxDockerDirPath());
-            $stub = $this->filesystem->compileStub($this->config->getPathResolver()->getStubsDirPath() . 'dockerfile-nginx.stub');
+            $stub = $this->filesystem->compileStub($this->config->getPathResolver()->getStubsDirPath() . DIRECTORY_SEPARATOR . 'dockerfile-nginx.stub');
             $this->filesystem->put($this->config->getPathResolver()->getNginxDockerfilePath(), $stub);
         } catch (FileNotFoundException | UnableToPutContentsToFile | UnableToCreateDirectory $exception) {
             return new ExecutorResult('Unable to create nginx dockerfile, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
