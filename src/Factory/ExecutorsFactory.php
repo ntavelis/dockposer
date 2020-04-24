@@ -11,6 +11,7 @@ use Ntavelis\Dockposer\Executors\DockerComposeExecutor;
 use Ntavelis\Dockposer\Executors\DockerDirectoryExecutor;
 use Ntavelis\Dockposer\Executors\NginxExecutor;
 use Ntavelis\Dockposer\Executors\PhpFpmExecutor;
+use Ntavelis\Dockposer\Executors\PhpVersionExecutor;
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 
 class ExecutorsFactory
@@ -28,8 +29,11 @@ class ExecutorsFactory
      */
     private $platformDependenciesProvider;
 
-    public function __construct(DockposerConfig $config, FilesystemInterface $filesystem, PlatformDependenciesProvider $platformDependenciesProvider)
-    {
+    public function __construct(
+        DockposerConfig $config,
+        FilesystemInterface $filesystem,
+        PlatformDependenciesProvider $platformDependenciesProvider
+    ) {
         $this->config = $config;
         $this->filesystem = $filesystem;
         $this->platformDependenciesProvider = $platformDependenciesProvider;
@@ -45,6 +49,7 @@ class ExecutorsFactory
             new DockerDirectoryExecutor($this->filesystem, $this->config),
             new NginxExecutor($this->filesystem, $this->config),
             new PhpFpmExecutor($this->filesystem, $this->config),
+            new PhpVersionExecutor($this->filesystem, $this->config, $this->platformDependenciesProvider),
         ];
     }
 }
