@@ -36,7 +36,7 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
         $this->config = $composer->getConfig();
 
-        $this->io->write('Plugin has been activated');
+        $this->io->write('Dockposer Plugin has been activated');
     }
 
     public function postDependenciesSolving(InstallerEvent $event = null)
