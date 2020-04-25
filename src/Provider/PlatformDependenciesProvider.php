@@ -44,7 +44,6 @@ class PlatformDependenciesProvider
         foreach ($dependencies as $dependency => $version) {
             if ($dependency === ComposerDependencies::PHP) {
                 $this->resolvePhpVersion($version);
-                $resolvedDependencies[] = $dependency;
                 continue;
             }
 

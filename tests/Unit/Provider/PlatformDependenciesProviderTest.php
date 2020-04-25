@@ -51,7 +51,6 @@ class PlatformDependenciesProviderTest extends TestCase
         $dependencies = $this->provider->getDependencies();
 
         $this->assertSame([
-            'php',
             'ctype',
             'iconv',
         ], $dependencies);
