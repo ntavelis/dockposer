@@ -15,7 +15,7 @@ use Ntavelis\Dockposer\Utils\PreBundledExtensions;
 
 class PhpExtensionsExecutor implements ExecutorInterface
 {
-    private const TEMPLATE = "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\nRUN install-php-extensions \n{{extensions}}";
+    private const TEMPLATE = "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\nRUN install-php-extensions \\\n\t{{extensions}}";
     private const CONFIG_MARKER = 'ntavelis/dockposer/php-extensions';
     /**
      * @var FilesystemInterface
@@ -58,7 +58,6 @@ class PhpExtensionsExecutor implements ExecutorInterface
                 return new ExecutorResult('Nothing to update', ExecutorStatus::SKIPPED);
             }
             $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $newFileContents);
-
         } catch (FileNotFoundException| UnableToPutContentsToFile $exception) {
             return new ExecutorResult('Unable to replace php version in php-fpm docker file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
@@ -86,6 +85,6 @@ class PhpExtensionsExecutor implements ExecutorInterface
             return !in_array($extension, $preBundledExtensions);
         });
 
-        return implode("\n", $list);
+        return implode(" \\\n\t", $list);
     }
 }

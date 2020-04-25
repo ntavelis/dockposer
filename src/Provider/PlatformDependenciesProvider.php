@@ -29,6 +29,14 @@ class PlatformDependenciesProvider
         return $this->dependencies;
     }
 
+    public function getDependenciesSorted(): array
+    {
+        $dependencies = $this->dependencies;
+        sort($dependencies);
+
+        return $dependencies;
+    }
+
     public function getPhpVersion(): string
     {
         if (!isset($this->phpVersion)) {

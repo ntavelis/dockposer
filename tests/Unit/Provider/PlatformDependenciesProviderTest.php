@@ -16,6 +16,7 @@ class PlatformDependenciesProviderTest extends TestCase
         'php' => '[>= 7.2.5.0-dev < 8.0.0.0-dev]',
         'ext-ctype' => '[]',
         'ext-iconv' => '[]',
+        'ext-amqp' => '[]',
         'ntavelis/dockposer' => '== 9999999-dev',
         'symfony/console' => '[>= 5.0.0.0-dev < 5.1.0.0-dev]',
         'symfony/dotenv' => '[>= 5.0.0.0-dev < 5.1.0.0-dev]',
@@ -53,6 +54,7 @@ class PlatformDependenciesProviderTest extends TestCase
         $this->assertSame([
             'ctype',
             'iconv',
+            'amqp',
         ], $dependencies);
     }
 
@@ -71,5 +73,31 @@ class PlatformDependenciesProviderTest extends TestCase
         ], $dependencies);
 
         $this->assertNotEmpty($provider->getPhpVersion());
+    }
+
+    /** @test */
+    public function itCanResolveTheDependenciesSorted()
+    {
+        $dependencies = $this->provider->getDependenciesSorted();
+
+        $this->assertSame([
+            'amqp',
+            'ctype',
+            'iconv',
+        ], $dependencies, 'Dependencies are not Sorted');
+    }
+    
+    /** @test */
+    public function ifWeGetTheDependenciesSortedTheInitialListHasNotBeenAltered(): void
+    {
+        $this->provider->getDependenciesSorted();
+
+        $dependencies = $this->provider->getDependencies();
+
+        $this->assertSame([
+            'ctype',
+            'iconv',
+            'amqp',
+        ], $dependencies);
     }
 }

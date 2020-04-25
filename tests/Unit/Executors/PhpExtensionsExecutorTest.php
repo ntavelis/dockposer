@@ -67,7 +67,8 @@ class PhpExtensionsExecutorTest extends TestCase
             ->willReturn(
                 "###> ntavelis/dockposer/php-extensions ###\n" .
                 "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\n" .
-                "RUN install-php-extensions \nsoap\n" .
+                "RUN install-php-extensions \\\n\t" .
+                "soap\n" .
                 "###> ntavelis/dockposer/php-extensions ###"
             );
         $this->filesystem
@@ -77,10 +78,89 @@ class PhpExtensionsExecutorTest extends TestCase
                 'docker/php-fpm/Dockerfile',
                 "###> ntavelis/dockposer/php-extensions ###\n" .
                 "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\n" .
-                "RUN install-php-extensions \nbcmath\n" .
+                "RUN install-php-extensions \\\n\t" .
+                "bcmath\n" .
                 "###> ntavelis/dockposer/php-extensions ###"
             );
 
         $this->executor->execute();
+    }
+
+    /** @test */
+    public function itWillUpdateMultiplePhpExtensionsInTheListInThePhpFpmDockerFile(): void
+    {
+        $composerDependencies = [
+            'php' => '[>= 7.2.5.0-dev < 8.0.0.0-dev]',
+            'ext-amqp' => '[]',
+            'ext-bcmath' => '[]',
+            'ext-redis' => '[]',
+            'ntavelis/dockposer' => '== 9999999-dev',
+        ];
+        $provider = new PlatformDependenciesProvider($composerDependencies);
+        $executor = new PhpExtensionsExecutor($this->filesystem, $this->config, $provider);
+        $this->filesystem
+            ->expects($this->once())
+            ->method('readFile')
+            ->willReturn(
+                "###> ntavelis/dockposer/php-extensions ###\n" .
+                "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\n" .
+                "RUN install-php-extensions \\\n\t" .
+                "soap\n" .
+                "###> ntavelis/dockposer/php-extensions ###"
+            );
+        $this->filesystem
+            ->expects($this->once())
+            ->method('put')
+            ->with(
+                'docker/php-fpm/Dockerfile',
+                "###> ntavelis/dockposer/php-extensions ###\n" .
+                "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\n" .
+                "RUN install-php-extensions \\\n\t" .
+                "amqp \\\n\t" .
+                "bcmath \\\n\t" .
+                "redis\n" .
+                "###> ntavelis/dockposer/php-extensions ###"
+            );
+
+        $executor->execute();
+    }
+
+    /** @test */
+    public function itWillSortTheExternalDependenciesInThePhpFpmDockerFile(): void
+    {
+        $composerDependencies = [
+            'php' => '[>= 7.2.5.0-dev < 8.0.0.0-dev]',
+            'ext-bcmath' => '[]',
+            'ext-redis' => '[]',
+            'ext-amqp' => '[]',
+            'ntavelis/dockposer' => '== 9999999-dev',
+        ];
+        $provider = new PlatformDependenciesProvider($composerDependencies);
+        $executor = new PhpExtensionsExecutor($this->filesystem, $this->config, $provider);
+        $this->filesystem
+            ->expects($this->once())
+            ->method('readFile')
+            ->willReturn(
+                "###> ntavelis/dockposer/php-extensions ###\n" .
+                "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\n" .
+                "RUN install-php-extensions \\\n\t" .
+                "soap\n" .
+                "###> ntavelis/dockposer/php-extensions ###"
+            );
+        $this->filesystem
+            ->expects($this->once())
+            ->method('put')
+            ->with(
+                'docker/php-fpm/Dockerfile',
+                "###> ntavelis/dockposer/php-extensions ###\n" .
+                "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\n" .
+                "RUN install-php-extensions \\\n\t" .
+                "amqp \\\n\t" .
+                "bcmath \\\n\t" .
+                "redis\n" .
+                "###> ntavelis/dockposer/php-extensions ###"
+            );
+
+        $executor->execute();
     }
 }
