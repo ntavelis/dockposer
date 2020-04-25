@@ -1,6 +1,6 @@
 {
     "name": "ntavelis/dockposer",
-    "description": "Composer plugin that automatically generates docker files.",
+    "description": "Composer plugin that automatically generates and keeps in sync docker files with php extensions declared in composer.json.",
     "type": "composer-plugin",
     "license": "MIT",
     "authors": [
