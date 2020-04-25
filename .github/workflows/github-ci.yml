@@ -16,6 +16,7 @@ jobs:
                     path: vendor
     unit_tests_php72:
         name: Unit tests PHP 7.2
+        needs: install_dev_dependencies
         runs-on: ubuntu-latest
         steps:
             -   name: Download composer dependencies
