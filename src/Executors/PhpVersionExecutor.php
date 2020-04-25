@@ -65,7 +65,7 @@ class PhpVersionExecutor implements ExecutorInterface
             }
             unset($initialFileContents); // Memory cleanup
             return new ExecutorResult('file not marked', ExecutorStatus::NOT_MARKED);
-        } catch (FileNotFoundException| UnableToPutContentsToFile $exception) {
+        } catch (FileNotFoundException | UnableToPutContentsToFile $exception) {
             return new ExecutorResult('Unable to replace php version in php-fpm docker file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
     }

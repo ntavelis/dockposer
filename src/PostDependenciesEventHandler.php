@@ -32,7 +32,6 @@ class PostDependenciesEventHandler
         $executors = $this->executorsFactory->createDefaultExecutors();
 
         foreach ($executors as $executor) {
-
             if (!$executor->shouldExecute()) {
                 continue;
             }
