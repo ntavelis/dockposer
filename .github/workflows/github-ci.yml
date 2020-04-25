@@ -26,3 +26,11 @@ jobs:
             -   uses: actions/checkout@v1
             -   run: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpunit
+    codesniffer_php72:
+        name: Code style violations
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: docker://php:7.2
+            -   uses: actions/checkout@v1
+            -   run: composer install --no-ansi --no-progress
+            -   run: ./vendor/bin/phpcs --standard=PSR12 src
