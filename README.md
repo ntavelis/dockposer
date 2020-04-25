@@ -2,7 +2,7 @@
 
 Dockposer is a composer plugin that automatically generates and keeps in sync docker files with php extensions declared in composer.json.
 
-The goal of this composer plugin is to keep in sync the PHP extensions/dependencies that you have declared in the `require` section of your composer.json file, with your docker files.
+The goal of this composer plugin is to keep in sync the php extensions/dependencies that you have declared in the `require` section of your composer.json file, with your docker files.
 When you declare a dependency, e.g `ext-amqp`, in your composer.json this package will automatically generate the required docker instructions to install pecl amqp extension in your docker images.
 Furthermore this package will sync the required php version with the version of the official docker image that gets pulled.
 
@@ -10,7 +10,7 @@ It is considered a good practice to declare your system's dependencies in the co
 
 > ext-<name> allows you to require PHP extensions (includes core extensions). Versioning can be quite inconsistent here, so it's often a good idea to set the constraint to *. An example of an extension package name is ext-gd
 
-With this composer-plugin by declaring the PHP extensions in your composer.json, you get the additional benefit of keeping in sync the required extensions with your dockerfile definitions.
+With this composer-plugin by declaring the php extensions in your composer.json, you get the additional benefit of keeping in sync the required extensions with your dockerfile definitions.
 
 ## Installation
 
@@ -25,12 +25,12 @@ With this composer-plugin by declaring the PHP extensions in your composer.json,
 The package will generate `docker` and `docker-compose` files. So I assume you have them installed in your system.
 ## How it works
 
-This packages gets triggered every time the composer tries to resolve your dependencies, e.g `composer install` or `composer update` will trigger this package to run. Even if no dependencies are going to be installed.
+This packages gets triggered every time after the composer tries to resolve your dependencies, e.g `composer install` or `composer update` will trigger this package to run.
 
-Dockposer will read the `require` section of your composer.json file and will generate docker instructions to install the php extensions you have declared in your `require` section. PHP extentions have the `ext` prefix, e.g. `ext-amqp`, `ext-ldap`.
-It will also read your declared PHP version in the `require` section of composer.json and will generate FROM instruction in docker file to pull the official docker image with the same version. If the version is not declared will default to the php version that run the composer. 
+Dockposer will read the `require` section of your composer.json file and will generate docker instructions to install the php extensions you have declared in your `require` section. The php extentions have the `ext` prefix, e.g. `ext-amqp`, `ext-ldap`.
+It will also read your declared php version in the `require` section of composer.json and will generate FROM instruction in docker file to pull the official docker image with the same version. If the php version is not declared in the composer.json, it will default to the php version that executes the composer. 
 
-It does not only generate the instructions, but it keeps them in sync. Any given time the require section of composer.json will be in sync with the docker instructions, leaving you only to think  how you will create your app.
+It does not only generate the instructions, but it keeps them in sync. Any given time the require section of composer.json will be in sync with the docker instructions, leaving you only to think how you will create your app.
 
 ### First execution
 The first time you will run this package it will generate the below files:
@@ -63,7 +63,7 @@ RUN install-php-extensions \
 	ldap
 ###> ntavelis/dockposer/php-extensions ###
 ```
-As you keep adding or removing PHP extensions as dependencies in your composer.json file, you will see that this sections gets automatically updated, to be in sync with your dependencies.
+As you keep adding or removing php extensions as dependencies in your composer.json file, you will see that this sections gets automatically updated, to be in sync with your dependencies.
 Of course dockposer doesn't want to get in your way, so you are free to modify the Dockerfile outside the marked regions.
 If you do not want dockposer to maintain a section, simply delete it, dockposer will figure it out and will not maintain the given region, which means of course that you will lose some functionality.
 
@@ -102,7 +102,7 @@ Please refer [here](https://github.com/mlocati/docker-php-extension-installer#su
 
 If an extension is pre-installed inside the official docker images, and you declare it in the composer.json, we will not generate any docker instructions for the given library.
 
-Pre-installed PHP extensions inside official php images:
+Pre-installed php extensions inside official php images:
 
 * core
 * ctype
