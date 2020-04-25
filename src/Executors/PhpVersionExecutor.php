@@ -49,24 +49,37 @@ class PhpVersionExecutor implements ExecutorInterface
     public function execute(): ExecutorResult
     {
         try {
-            $initialFileContents = $this->filesystem->readFile($this->config->getPathResolver()->getPhpFpmDockerfilePath());
+            $phpFpmDockerfilePath = $this->config->getPathResolver()->getPhpFpmDockerfilePath();
+            $initialFileContents = $this
+                ->filesystem
+                ->readFile($phpFpmDockerfilePath);
 
             if ($this->marker->isFileMarked($initialFileContents)) {
-                $buildTemplate = str_replace('{{php_version}}', $this->platformDependenciesProvider->getPhpVersion(), self::TEMPLATE);
+                $buildTemplate = str_replace(
+                    '{{php_version}}',
+                    $this->platformDependenciesProvider->getPhpVersion(),
+                    self::TEMPLATE
+                );
                 $content = $this->marker->wrapInMarks($buildTemplate);
                 $newFileContents = $this->marker->updateMarkedData($initialFileContents, $content);
                 if ($initialFileContents === $newFileContents) {
                     return new ExecutorResult('Nothing to update', ExecutorStatus::SKIPPED);
                 }
-                $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $newFileContents);
+                $this->filesystem->put($phpFpmDockerfilePath, $newFileContents);
 
                 unset($initialFileContents, $newFileContents); // Memory cleanup
-                return new ExecutorResult("Replaced php version in php-fpm dockerfile ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
+                return new ExecutorResult(
+                    "Replaced php version in php-fpm dockerfile ./{$phpFpmDockerfilePath}",
+                    ExecutorStatus::SUCCESS
+                );
             }
             unset($initialFileContents); // Memory cleanup
             return new ExecutorResult('file not marked', ExecutorStatus::NOT_MARKED);
         } catch (FileNotFoundException | UnableToPutContentsToFile $exception) {
-            return new ExecutorResult('Unable to replace php version in php-fpm docker file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
+            return new ExecutorResult(
+                'Unable to replace php version in php-fpm docker file, reason: ' . $exception->getMessage(),
+                ExecutorStatus::FAIL
+            );
         }
     }
 

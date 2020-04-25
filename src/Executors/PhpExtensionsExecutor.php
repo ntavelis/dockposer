@@ -15,9 +15,11 @@ use Ntavelis\Dockposer\Utils\PreBundledExtensions;
 
 class PhpExtensionsExecutor implements ExecutorInterface
 {
-    private const TEMPLATE = "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\nRUN install-php-extensions \\\n\t{{extensions}}";
+    private const TEMPLATE = "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\n" .
+    "RUN install-php-extensions \\\n\t{{extensions}}";
     private const CONFIG_MARKER = 'ntavelis/dockposer/php-extensions';
-    private const ZERO_EXTENSIONS_MESSAGE = '# You have installed all the required extensions, or you are requiring prebuild extensions that already exist inside the image';
+    private const ZERO_EXTENSIONS_MESSAGE = '# You have installed all the required extensions,' .
+    ' or you are requiring prebuild extensions that already exist inside the image';
     /**
      * @var FilesystemInterface
      */
@@ -49,7 +51,8 @@ class PhpExtensionsExecutor implements ExecutorInterface
     public function execute(): ExecutorResult
     {
         try {
-            $initialFileContents = $this->filesystem->readFile($this->config->getPathResolver()->getPhpFpmDockerfilePath());
+            $phpFpmDockerfilePath = $this->config->getPathResolver()->getPhpFpmDockerfilePath();
+            $initialFileContents = $this->filesystem->readFile($phpFpmDockerfilePath);
 
             if ($this->marker->isFileMarked($initialFileContents)) {
                 $extensionsString = $this->buildExtensionsString();
@@ -58,15 +61,21 @@ class PhpExtensionsExecutor implements ExecutorInterface
                 if ($initialFileContents === $newFileContents) {
                     return new ExecutorResult('Nothing to update', ExecutorStatus::SKIPPED);
                 }
-                $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $newFileContents);
+                $this->filesystem->put($phpFpmDockerfilePath, $newFileContents);
 
                 unset($initialFileContents, $newFileContents); // Memory cleanup
-                return new ExecutorResult("Replaced php extensions in php-fpm dockerfile ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
+                return new ExecutorResult(
+                    "Replaced php extensions in php-fpm dockerfile ./{$phpFpmDockerfilePath}",
+                    ExecutorStatus::SUCCESS
+                );
             }
             unset($initialFileContents); // Memory cleanup
             return new ExecutorResult('file not marked', ExecutorStatus::NOT_MARKED);
         } catch (FileNotFoundException | UnableToPutContentsToFile $exception) {
-            return new ExecutorResult('Unable to replace php extensions in php-fpm docker file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
+            return new ExecutorResult(
+                'Unable to replace php extensions in php-fpm docker file, reason: ' . $exception->getMessage(),
+                ExecutorStatus::FAIL
+            );
         }
     }
 
