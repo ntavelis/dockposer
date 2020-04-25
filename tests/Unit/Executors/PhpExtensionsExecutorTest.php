@@ -201,4 +201,38 @@ class PhpExtensionsExecutorTest extends TestCase
         $this->assertSame('file not marked', $result->getResult());
         $this->assertSame(ExecutorStatus::NOT_MARKED, $result->getStatus());
     }
+
+    /** @test */
+    public function ifTheNumberOfExtensionsIsZeroWeAddAppropriateMessageAndRemoveTheExtensionCommands(): void
+    {
+        $composerDependencies = [
+            'php' => '[>= 7.2.5.0-dev < 8.0.0.0-dev]',
+            'ntavelis/dockposer' => '== 9999999-dev',
+        ];
+        $provider = new PlatformDependenciesProvider($composerDependencies);
+        $executor = new PhpExtensionsExecutor($this->filesystem, $this->config, $provider);
+        $this->filesystem
+            ->expects($this->once())
+            ->method('readFile')
+            ->willReturn(
+                "###> ntavelis/dockposer/php-extensions ###\n" .
+                "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\n" .
+                "RUN install-php-extensions \\\n\t" .
+                "soap\n" .
+                "###> ntavelis/dockposer/php-extensions ###"
+            );
+        $this->filesystem
+            ->expects($this->once())
+            ->method('put')
+            ->with(
+                'docker/php-fpm/Dockerfile',
+                "###> ntavelis/dockposer/php-extensions ###\n" .
+                "# You have installed all the required extensions, or you are requiring prebuild extensions that already exist inside the image\n" .
+                "# DO NOT REMOVE THIS MARKED SECTION, so that dockposer will automatically update this section\n" .
+                "###> ntavelis/dockposer/php-extensions ###"
+            );
+
+        $result = $executor->execute();
+        $this->assertSame(ExecutorStatus::SUCCESS, $result->getStatus());
+    }
 }

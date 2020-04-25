@@ -17,6 +17,8 @@ class PhpExtensionsExecutor implements ExecutorInterface
 {
     private const TEMPLATE = "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\nRUN install-php-extensions \\\n\t{{extensions}}";
     private const CONFIG_MARKER = 'ntavelis/dockposer/php-extensions';
+    private const ZERO_EXTENSIONS_MESSAGE = "# You have installed all the required extensions, or you are requiring prebuild extensions that already exist inside the image\n"
+    . "# DO NOT REMOVE THIS MARKED SECTION, so that dockposer will automatically update this section";
     /**
      * @var FilesystemInterface
      */
@@ -52,8 +54,7 @@ class PhpExtensionsExecutor implements ExecutorInterface
 
             if ($this->marker->isFileMarked($initialFileContents)) {
                 $extensionsString = $this->buildExtensionsString();
-                $buildTemplate = str_replace('{{extensions}}', $extensionsString, self::TEMPLATE);
-                $content = $this->marker->wrapInMarks($buildTemplate);
+                $content = $this->marker->wrapInMarks($extensionsString);
                 $newFileContents = $this->marker->updateMarkedData($initialFileContents, $content);
                 if ($initialFileContents === $newFileContents) {
                     return new ExecutorResult('Nothing to update', ExecutorStatus::SKIPPED);
@@ -87,6 +88,11 @@ class PhpExtensionsExecutor implements ExecutorInterface
             return !in_array($extension, $preBundledExtensions);
         });
 
-        return implode(" \\\n\t", $list);
+        if (count($list) === 0) {
+            return self::ZERO_EXTENSIONS_MESSAGE;
+        }
+
+        $extensionsListToString = implode(" \\\n\t", $list);
+        return str_replace('{{extensions}}', $extensionsListToString, self::TEMPLATE);
     }
 }
