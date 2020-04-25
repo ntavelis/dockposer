@@ -228,7 +228,6 @@ class PhpExtensionsExecutorTest extends TestCase
                 'docker/php-fpm/Dockerfile',
                 "###> ntavelis/dockposer/php-extensions ###\n" .
                 "# You have installed all the required extensions, or you are requiring prebuild extensions that already exist inside the image\n" .
-                "# DO NOT REMOVE THIS MARKED SECTION, so that dockposer will automatically update this section\n" .
                 "###> ntavelis/dockposer/php-extensions ###"
             );
 

@@ -1,3 +1,5 @@
+# Docker compose file, that initiliazes the application's containers
+# Feel free to edit this file
 version: '3.3'
 services:
     php-fpm:

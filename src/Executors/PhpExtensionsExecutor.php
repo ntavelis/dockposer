@@ -17,8 +17,7 @@ class PhpExtensionsExecutor implements ExecutorInterface
 {
     private const TEMPLATE = "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\nRUN install-php-extensions \\\n\t{{extensions}}";
     private const CONFIG_MARKER = 'ntavelis/dockposer/php-extensions';
-    private const ZERO_EXTENSIONS_MESSAGE = "# You have installed all the required extensions, or you are requiring prebuild extensions that already exist inside the image\n"
-    . "# DO NOT REMOVE THIS MARKED SECTION, so that dockposer will automatically update this section";
+    private const ZERO_EXTENSIONS_MESSAGE = '# You have installed all the required extensions, or you are requiring prebuild extensions that already exist inside the image';
     /**
      * @var FilesystemInterface
      */

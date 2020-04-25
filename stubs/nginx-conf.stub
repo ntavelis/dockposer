@@ -1,3 +1,6 @@
+# Nginx configuration, good for almost any project
+# Points to the entry point public/index.php
+# Feel free to edit this file
 server {
     listen   80; ## listen for ipv4; this line is default and implied
     listen   [::]:80 default ipv6only=on; ## listen for ipv6
@@ -32,7 +35,7 @@ server {
 
     # pass the PHP scripts to FastCGI server listening on socket
     location ~ ^/index\.php(/|$) {
-        fastcgi_pass php-fpm:9000;
+        fastcgi_pass {php-fpm-dns}:9000;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;

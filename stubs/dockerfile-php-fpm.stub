@@ -1,6 +1,18 @@
+# PHP FPM dockerfile, creates the php-fpm docker image that will be used from your application
+# There are some marked sections inside this dockerfile, that begin and end with `###> %s ###`
+# These marked sections are handled by dockposer, if you remove them, then simply dockposer will not update them anymore
+
 ###> ntavelis/dockposer/php-docker-image ###
 FROM php:{{php_version}}-fpm
 ###> ntavelis/dockposer/php-docker-image ###
 
+###> ntavelis/dockposer/php-extensions ###
+# You have installed all the required extensions, or you are requiring prebuild extensions that already exist inside the image
+###> ntavelis/dockposer/php-extensions ###
+
 # Copy project files inside the container
 COPY . /srv/app
+
+# You are free to do whatever you want outside the marked sections
+# Feel free to edit this file
+# Just remember if you delete the marked sections then you will have to maintain them on your own

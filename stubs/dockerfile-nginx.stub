@@ -1,3 +1,6 @@
+# Nginx docker file, creates the nginx docker image that will be used from your application
+# Feel free to edit this file
+
 FROM nginx:latest
 
 ARG php_fpm_dns='localhost'
