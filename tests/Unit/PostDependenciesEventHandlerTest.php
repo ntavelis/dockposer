@@ -90,4 +90,18 @@ class PostDependenciesEventHandlerTest extends TestCase
 
         $this->executor->run();
     }
+
+    /** @test */
+    public function ifTheStatusOfTheExecutorIsNotMarkedItDoesNotWriteAnyOutput(): void
+    {
+        $executor1 = $this->createMock(ExecutorInterface::class);
+        $executor1->expects($this->once())->method('execute')->willReturn(new ExecutorResult('', ExecutorStatus::NOT_MARKED));
+        $executor1->expects($this->once())->method('shouldExecute')->willReturn(true);
+        $this->executorsFactory->expects($this->once())->method('createDefaultExecutors')->willReturn([$executor1]);
+
+        $this->io->expects($this->never())->method('writeError');
+        $this->io->expects($this->never())->method('write');
+
+        $this->executor->run();
+    }
 }

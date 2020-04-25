@@ -42,7 +42,7 @@ class PostDependenciesEventHandler
             if ($result->getStatus() === ExecutorStatus::SUCCESS) {
                 $this->writeSuccess($result->getResult());
                 continue;
-            } elseif ($result->getStatus() === ExecutorStatus::SKIPPED) {
+            } elseif (in_array($result->getStatus(), [ExecutorStatus::SKIPPED, ExecutorStatus::NOT_MARKED])) {
                 continue;
             }
 

@@ -60,9 +60,7 @@ class PhpExtensionsExecutor implements ExecutorInterface
                 }
                 $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $newFileContents);
 
-                // Memory cleanup
-                unset($initialFileContents, $newFileContents);
-
+                unset($initialFileContents, $newFileContents); // Memory cleanup
                 return new ExecutorResult("Replaced php extensions in php-fpm dockerfile ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
             }
             unset($initialFileContents); // Memory cleanup
@@ -70,8 +68,6 @@ class PhpExtensionsExecutor implements ExecutorInterface
         } catch (FileNotFoundException| UnableToPutContentsToFile $exception) {
             return new ExecutorResult('Unable to replace php extensions in php-fpm docker file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-
-
     }
 
     public function shouldExecute(array $context = []): bool
