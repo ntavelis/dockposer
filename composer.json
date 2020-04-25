@@ -24,6 +24,11 @@
             "Ntavelis\\Dockposer\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Ntavelis\\Dockposer\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "class": "Ntavelis\\Dockposer\\DockposerPlugin"
     }

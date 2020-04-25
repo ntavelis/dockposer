@@ -8,6 +8,7 @@ use Ntavelis\Dockposer\Contracts\ExecutorInterface;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
+use Ntavelis\Dockposer\Exception\ConfigValueNotFoundException;
 use Ntavelis\Dockposer\Exception\FileNotFoundException;
 use Ntavelis\Dockposer\Exception\UnableToPutContentsToFile;
 use Ntavelis\Dockposer\Message\ExecutorResult;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Message;
+namespace Ntavelis\Dockposer\Tests\Unit\Message;
 
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
 use Ntavelis\Dockposer\Message\ExecutorResult;

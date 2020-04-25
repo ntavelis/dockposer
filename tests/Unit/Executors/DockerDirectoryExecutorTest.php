@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Executors;
+namespace Ntavelis\Dockposer\Tests\Unit\Executors;
 
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;

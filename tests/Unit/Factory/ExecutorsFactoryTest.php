@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Factory;
+namespace Ntavelis\Dockposer\Tests\Unit\Factory;
 
 use Ntavelis\Dockposer\Contracts\ExecutorInterface;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;

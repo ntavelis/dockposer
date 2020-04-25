@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Utils;
+namespace Ntavelis\Dockposer\Tests\Unit\Utils;
 
 use Ntavelis\Dockposer\Utils\Helpers;
 use PHPUnit\Framework\TestCase;

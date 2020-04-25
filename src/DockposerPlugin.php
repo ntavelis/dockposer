@@ -30,7 +30,7 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
      */
     private $config;
 
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
         $this->composer = $composer;
         $this->io = $io;
@@ -39,7 +39,7 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
         $this->io->write('Dockposer Plugin has been activated');
     }
 
-    public function postDependenciesSolving(InstallerEvent $event = null)
+    public function postDependenciesSolving(InstallerEvent $event = null): void
     {
         $packages = $this->composer->getPackage()->getRequires();
         $dependencies = array_map(function ($version) {

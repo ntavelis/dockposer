@@ -58,7 +58,8 @@ class Filesystem implements FilesystemInterface
             throw new FileNotFoundException('Unable to locate file ' . $absolutePathToStub);
         }
 
-        return file_get_contents($absolutePathToStub) ?? '';
+        $contents = file_get_contents($absolutePathToStub);
+        return $contents === false ? '' : $contents;
     }
 
     public function fileExists(string $filePath): bool
@@ -89,7 +90,8 @@ class Filesystem implements FilesystemInterface
             throw new FileNotFoundException('Unable to locate file ' . $location);
         }
 
-        return file_get_contents($location) ?? '';
+        $contents = file_get_contents($location);
+        return $contents === false ? '' : $contents;
     }
 
     private function applyPathPrefix(string $path): string

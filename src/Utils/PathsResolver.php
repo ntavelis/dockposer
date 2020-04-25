@@ -61,7 +61,7 @@ class PathsResolver
         return $this->dockposerConfig->getDockposerDir() . DIRECTORY_SEPARATOR . 'stubs';
     }
 
-    public function getNginxConfigFilePath()
+    public function getNginxConfigFilePath(): string
     {
         return $this->getNginxDockerDirPath() .
             DIRECTORY_SEPARATOR .

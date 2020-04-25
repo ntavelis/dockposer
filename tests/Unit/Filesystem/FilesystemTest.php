@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Filesystem;
+namespace Ntavelis\Dockposer\Tests\Unit\Filesystem;
 
 use Ntavelis\Dockposer\Exception\FileNotFoundException;
 use Ntavelis\Dockposer\Exception\UnableToCreateDirectory;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Provider;
+namespace Ntavelis\Dockposer\Tests\Unit\Provider;
 
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 use PHPUnit\Framework\TestCase;
