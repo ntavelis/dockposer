@@ -46,9 +46,9 @@ class DockposerConfigTest extends TestCase
     }
 
     /** @test */
-    public function ifAConfigValueDoesNotExistWeReturnNull(): void
+    public function ifAConfigValueDoesNotExistWeReturnAnEmptyString(): void
     {
-        $this->assertNull($this->config->getExecutorConfig('not_existent'));
+        $this->assertSame('', $this->config->getExecutorConfig('not_existent'));
     }
 
     /** @test */
