@@ -9,7 +9,7 @@ jobs:
             -   uses: docker://php:7.2
             -   uses: actions/checkout@v1
             -   run: composer install --no-ansi --no-progress
-            -   name: Upload vendor folder
+            -   name: Upload composer dependencies
                 uses: actions/upload-artifact@v1
                 with:
                     name: vendor
@@ -18,9 +18,10 @@ jobs:
         name: Unit tests PHP 7.2
         runs-on: ubuntu-latest
         steps:
-            -   uses: docker://php:7.2
-            -   uses: actions/checkout@v1
-            -   run: composer install --no-ansi --no-progress
+            -   name: Download composer dependencies
+                uses: actions/download-artifact@v1
+                with:
+                    name: vendor
             -   run: ./vendor/bin/phpunit
     unit_tests_php73:
         name: Unit tests PHP 7.3
