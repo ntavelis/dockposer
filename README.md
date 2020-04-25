@@ -37,7 +37,7 @@ The first time you will run this package it will generate the below files:
 
 YOU CAN modify any file, dockposer is smart enough to update the contents of the docker files inside the marked regions.
 
-### Marked regions
+## Marked regions
 
 As mentioned above, dockposer updates the contents of the marked regions. A marked region starts and ends with this type of comment. ``###> %s ###``.
 
@@ -54,7 +54,7 @@ As you keep adding or removing, PHP extensions as dependencies in your composer.
 Of course dockposer doesn't want to get in your way, so you are free to modify the Dockerfile outside the marked regions.
 If you do not want dockposer to maintain a section, simply delete it. Dockposer will figure it out and will not maintain the given region, which means of course that you will lose some functionality.
 
-### Configuration
+## Configuration
 
 You can configure the names of the files, and the directory names, currently the below configuration is being supported by dockposer.
 
@@ -79,7 +79,51 @@ In order to change the configuration you need to add it in the composer.json und
 ...
 ```
 
-Note: When changing a folder or a file name, all the references to it will use the name you specified.
+Note: When changing a folder, or a file name, all the references to it will use the name you specified.
+
+## List of supported extensions
+
+Under the hood in the dockerfile definitions we use the shell scripts from [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer) repository.
+
+Please refer [here](https://github.com/mlocati/docker-php-extension-installer#supported-php-extensions) for a list of supported php extensions you can install.
+
+If an extension is pre-installed inside the official docker images, and you declare it in the composer.json, we will not generate any docker instructions for the given library.
+
+Pre-installed PHP extensions inside official php images:
+
+* core
+* ctype
+* curl
+* date
+* dom
+* fileinfo
+* filter
+* ftp
+* hash
+* iconv
+* json
+* libxml
+* mbstring
+* mysqlnd
+* openssl
+* pcre
+* pdo
+* pdo_sqlite
+* phar
+* posix
+* readline
+* reflection
+* session
+* simplexml
+* sodium
+* spl
+* sqlite3
+* standard
+* tokenizer
+* xml
+* xmlreader
+* xmlwriter
+* zlib
 
 ## How to debug package with xdebug - For contributing to this repository
 
