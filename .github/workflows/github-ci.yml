@@ -6,9 +6,9 @@ jobs:
         name: Install dev dependencies
         runs-on: ubuntu-latest
         uses: actions/upload-artifact@v1
-            with:
-                name: vendor
-                path: vendor
+        with:
+            name: vendor
+            path: vendor
         steps:
             -   uses: docker://php:7.2
             -   uses: actions/checkout@v1
