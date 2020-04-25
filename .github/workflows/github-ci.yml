@@ -1,0 +1,12 @@
+name: pipeline
+on: [push]
+
+jobs:
+    testing:
+        name: Testing
+        runs-on: ubuntu-latest
+        steps:
+            - uses: docker://php:7.3
+            - uses: actions/checkout@v1
+            - run: composer install
+            - run: ./bin/phpunit
