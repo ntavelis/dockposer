@@ -28,7 +28,7 @@ The package will generate `docker` and `docker-compose` files. So I assume you h
 This packages gets triggered every time the composer tries to resolve your dependencies, e.g `composer install` or `composer update` will trigger this package to run. Even if no dependencies are going to be installed.
 
 Dockposer will read the `require` section of your composer.json file and will generate docker instructions to install the php extensions you have declared in your `require` section. PHP extentions have the `ext` prefix, e.g. `ext-amqp`, `ext-ldap`.
-It will also read your declared PHP version in the `require` section of composer.json and will generate FROM instruction in docker file to pull the official docker image with the same version. If the version is not declare will default to the php version that run the composer. 
+It will also read your declared PHP version in the `require` section of composer.json and will generate FROM instruction in docker file to pull the official docker image with the same version. If the version is not declared will default to the php version that run the composer. 
 
 It does not only generate the instructions, but it keeps them in sync. Any given time the require section of composer.json will be in sync with the docker instructions, leaving you only to think  how you will create your app.
 
