@@ -1,4 +1,4 @@
-name: pipeline
+name: Continues Integration pipeline for ntavelis/dockposer
 on: [push]
 
 jobs:
