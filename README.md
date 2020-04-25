@@ -159,6 +159,8 @@ For Laravel, you need the bcmath extension that it is NOT pre-installed inside o
  
 ## How to debug package with xdebug - For contributing to this repository
 
+This sections decribes how to setup your local environment for development on this package. You do not need to do anything described in here if your are not going to contribute. :D
+
 ### Environment setup
 1. Given the following phpstorm config:
 ![image](assets/phpstorm_xdebug_settings.png)
