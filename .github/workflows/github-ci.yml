@@ -2,7 +2,7 @@ name: pipeline
 on: [push]
 
 jobs:
-    php72:
+    unit_tests_ php72:
         name: Unit tests PHP 7.2
         runs-on: ubuntu-latest
         steps:
@@ -10,7 +10,7 @@ jobs:
             - uses: actions/checkout@v1
             - run: composer install --no-ansi --no-progress
             - run: ./vendor/bin/phpunit
-    php73:
+    unit_tests_php73:
         name: Unit tests PHP 7.3
         runs-on: ubuntu-latest
         steps:
@@ -18,7 +18,7 @@ jobs:
             -   uses: actions/checkout@v1
             -   run: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpunit
-    php74:
+    unit_tests_php74:
         name: Unit tests PHP 7.4
         runs-on: ubuntu-latest
         steps:
