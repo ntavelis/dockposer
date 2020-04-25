@@ -1,4 +1,4 @@
-# PHP FPM dockerfile, creates the php-fpm docker image that will be used from your application
+# PHP FPM docker file, creates the php-fpm docker image that will be used from your application
 # There are some marked sections inside this dockerfile, that begin and end with `###> %s ###`
 # These marked sections are handled by dockposer, if you remove them, then simply dockposer will not update them anymore
 
