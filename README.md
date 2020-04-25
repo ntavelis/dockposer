@@ -2,7 +2,7 @@
 
 Dockposer is a composer plugin that automatically generates and keeps in sync docker files with php extensions declared in composer.json.
 
-The goal of this composer plugin is to keep in sync the PHP extensions/dependencies that you have declared in your composer.json file, with your dockerfiles.
+The goal of this composer plugin is to keep in sync the PHP extensions/dependencies that you have declared in the `require` section of your composer.json file, with your docker files.
 When you declare a dependency, e.g `ext-amqp`, in your composer.json this package will automatically generate the required docker instructions to install pecl amqp extension in your docker images.
 Furthermore this package will sync the required php version with the version of the official docker image that gets pulled.
 
@@ -22,10 +22,19 @@ With this composer-plugin by declaring the PHP extensions in your composer.json,
     ```
 2. Run `composer install` or `composer update` to execute it.
 
+## Prerequisites
+
+The package will generate `docker` and `docker-compose` files. So I assume you have them installed in your system.
 ## How it works
 
 This packages gets triggered every time the composer tries to resolve your dependencies, e.g `composer install` or `composer update` will trigger this package to run. Even if no dependencies are going to be installed.
 
+Dockposer will read the `require` section of your composer.json file and will generate docker instructions to install the php extensions you have declared in your `require` section. PHP extentions have the `ext` prefix, e.g. `ext-amqp`, `ext-ldap
+It will also read your declared PHP version in the `require` section of composer.json and will generate FROM instruction in docker file to pull the official docker image with the same version. If the version is not declare will default to the php version that run the composer. 
+
+It does not only generate the instructions, but it keeps them in sync. Any given time the require section of composer.json will be in sync with the docker instructions, leaving you only to think  how you will create your app.
+
+### First execution
 The first time you will run this package it will generate the below files:
 
 | File Name          | Location                    | Description                                                              |
@@ -36,6 +45,12 @@ The first time you will run this package it will generate the below files:
 | Dockerfile         | ./docker/php-fpm/Dockerfile | Dockerfile which contains instructions for the creation of php-fpm image |
 
 YOU CAN modify any file, dockposer is smart enough to update the contents of the docker files inside the marked regions.
+
+### Syncing of dependencies
+
+Every time you run `composer install` or `composer update` dockposer will look your `require` section and if needed it will take action to sync the docker files.
+
+Do not forget to run `docker-compose --build` to rebuild your images, so that they include the dependencies you required.
 
 ## Marked regions
 
@@ -125,6 +140,25 @@ Pre-installed PHP extensions inside official php images:
 * xmlwriter
 * zlib
 
+## PHP Frameworks
+
+### Symfony
+For Symfony the official docker image covers you, you just need to install this package and run `composer install` and `docker-compose up`. 
+
+### Laravel
+
+For Laravel, you need the bcmath extension that it is NOT pre-installed inside official docker images. Check Laravel requirements [here](https://laravel.com/docs/master/installation#server-requirements). 
+
+1. Install the package by following the instructions [link](#installation)
+2. Add bcmath extention to require section of composer.json
+    ```json
+    "require": {
+            "ext-bcmath": "*",
+    }
+    ```
+3. Run `composer install` to trigger the plugin to run.
+4. Run `docker-compose up` to initialize containers.
+ 
 ## How to debug package with xdebug - For contributing to this repository
 
 ### Environment setup
