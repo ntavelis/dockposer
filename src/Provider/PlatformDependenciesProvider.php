@@ -56,7 +56,11 @@ class PlatformDependenciesProvider
             }
 
             if (Helpers::stringStartsWith($dependency, ComposerDependencies::EXTERNAL_DEPENDENCIES_PREFIX)) {
-                $resolvedDependencies[] = str_replace(ComposerDependencies::EXTERNAL_DEPENDENCIES_PREFIX . '-', '', $dependency);
+                $resolvedDependencies[] = str_replace(
+                    ComposerDependencies::EXTERNAL_DEPENDENCIES_PREFIX . '-',
+                    '',
+                    $dependency
+                );
             }
         }
 
@@ -67,6 +71,7 @@ class PlatformDependenciesProvider
     {
         $cleanVersionString = str_replace(['-dev', '[', ']'], '', $version);
         $upperLowerVersionsArray = explode(' ', $cleanVersionString);
-        $this->phpVersion = (string)(float)$upperLowerVersionsArray[ComposerVersionIndexes::LOWER_LIMIT_VERSION_POSITION];
+        $phpVersion = (string)(float)$upperLowerVersionsArray[ComposerVersionIndexes::LOWER_LIMIT_VERSION_POSITION];
+        $this->phpVersion = $phpVersion;
     }
 }

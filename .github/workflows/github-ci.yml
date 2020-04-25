@@ -2,14 +2,25 @@ name: pipeline
 on: [push]
 
 jobs:
+    install_dev_dependencies:
+        name: Install dev dependencies
+        runs-on: ubuntu-latest
+        uses: actions/upload-artifact@v1
+            with:
+                name: vendor
+                path: vendor
+        steps:
+            -   uses: docker://php:7.2
+            -   uses: actions/checkout@v1
+            -   run: composer install --no-ansi --no-progress
     unit_tests_php72:
         name: Unit tests PHP 7.2
         runs-on: ubuntu-latest
         steps:
-            - uses: docker://php:7.2
-            - uses: actions/checkout@v1
-            - run: composer install --no-ansi --no-progress
-            - run: ./vendor/bin/phpunit
+            -   uses: docker://php:7.2
+            -   uses: actions/checkout@v1
+            -   run: composer install --no-ansi --no-progress
+            -   run: ./vendor/bin/phpunit
     unit_tests_php73:
         name: Unit tests PHP 7.3
         runs-on: ubuntu-latest
