@@ -8,9 +8,7 @@ Furthermore this package will sync the required php version with the version of 
 
 It is considered a good practice to declare your system's dependencies in the composer.json file, quote from getcomposer.org:
 
-``
-ext-<name> allows you to require PHP extensions (includes core extensions). Versioning can be quite inconsistent here, so it's often a good idea to set the constraint to *. An example of an extension package name is ext-gd
-``
+> ext-<name> allows you to require PHP extensions (includes core extensions). Versioning can be quite inconsistent here, so it's often a good idea to set the constraint to *. An example of an extension package name is ext-gd
 
 With this composer-plugin by declaring the PHP extensions in your composer.json, you get the additional benefit of keeping in sync the required extensions with your dockerfile definitions.
 
