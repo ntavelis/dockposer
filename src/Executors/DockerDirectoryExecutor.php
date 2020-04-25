@@ -34,7 +34,10 @@ class DockerDirectoryExecutor implements ExecutorInterface
         try {
             $this->filesystem->createDir($dockerDirName);
         } catch (UnableToCreateDirectory $exception) {
-            return new ExecutorResult('Unable to create docker directory, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
+            return new ExecutorResult(
+                'Unable to create docker directory, reason: ' . $exception->getMessage(),
+                ExecutorStatus::FAIL
+            );
         }
         return new ExecutorResult('Created docker directory, at ./' . $dockerDirName, ExecutorStatus::SUCCESS);
     }

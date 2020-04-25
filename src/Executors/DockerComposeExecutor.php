@@ -33,11 +33,16 @@ class DockerComposeExecutor implements ExecutorInterface
     {
         $dockerComposeFile = $this->config->getExecutorConfig('docker_compose_file');
         try {
-            $stub = $this->filesystem->compileStub($this->config->getPathResolver()->getStubsDirPath() . DIRECTORY_SEPARATOR . 'docker-compose.stub');
+            $stubsDirPath = $this->config->getPathResolver()->getStubsDirPath();
+            $pathToStub = $stubsDirPath . DIRECTORY_SEPARATOR . 'docker-compose.stub';
+            $stub = $this->filesystem->compileStub($pathToStub);
             $replacedStub = str_replace($this->replaceKeys(), $this->replaceValues(), $stub);
             $this->filesystem->put($dockerComposeFile, $replacedStub);
         } catch (FileNotFoundException | UnableToPutContentsToFile $exception) {
-            return new ExecutorResult('Unable to create ' . $dockerComposeFile . ' file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
+            return new ExecutorResult(
+                'Unable to create ' . $dockerComposeFile . ' file, reason: ' . $exception->getMessage(),
+                ExecutorStatus::FAIL
+            );
         }
         return new ExecutorResult('Added docker-compose file, at ./' . $dockerComposeFile, ExecutorStatus::SUCCESS);
     }

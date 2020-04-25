@@ -34,12 +34,20 @@ class PhpFpmExecutor implements ExecutorInterface
     {
         try {
             $this->filesystem->createDir($this->config->getPathResolver()->getPhpFpmDockerDirPath());
-            $stub = $this->filesystem->compileStub($this->config->getPathResolver()->getStubsDirPath() . DIRECTORY_SEPARATOR . 'dockerfile-php-fpm.stub');
+            $stubsDirPath = $this->config->getPathResolver()->getStubsDirPath();
+            $pathToStub = $stubsDirPath . DIRECTORY_SEPARATOR . 'dockerfile-php-fpm.stub';
+            $stub = $this->filesystem->compileStub($pathToStub);
             $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $stub);
         } catch (FileNotFoundException | UnableToPutContentsToFile | UnableToCreateDirectory $exception) {
-            return new ExecutorResult('Unable to create php-fpm dockerfile, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
+            return new ExecutorResult(
+                'Unable to create php-fpm dockerfile, reason: ' . $exception->getMessage(),
+                ExecutorStatus::FAIL
+            );
         }
-        return new ExecutorResult("Added php-fpm Dockerfile at ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
+        return new ExecutorResult(
+            "Added php-fpm Dockerfile at ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}",
+            ExecutorStatus::SUCCESS
+        );
     }
 
     public function shouldExecute(array $context = []): bool

@@ -30,12 +30,19 @@ class NginxConfigExecutor implements ExecutorInterface
     public function execute(): ExecutorResult
     {
         try {
-            $stub = $this->filesystem->compileStub($this->config->getPathResolver()->getStubsDirPath() . DIRECTORY_SEPARATOR . 'nginx-conf.stub');
+            $pathToStub = $this->config->getPathResolver()->getStubsDirPath() . DIRECTORY_SEPARATOR . 'nginx-conf.stub';
+            $stub = $this->filesystem->compileStub($pathToStub);
             $this->filesystem->put($this->config->getPathResolver()->getNginxConfigFilePath(), $stub);
         } catch (FileNotFoundException | UnableToPutContentsToFile $exception) {
-            return new ExecutorResult('Unable to create nginx config file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
+            return new ExecutorResult(
+                'Unable to create nginx config file, reason: ' . $exception->getMessage(),
+                ExecutorStatus::FAIL
+            );
         }
-        return new ExecutorResult("Added nginx config file at ./{$this->config->getPathResolver()->getNginxConfigFilePath()}", ExecutorStatus::SUCCESS);
+        return new ExecutorResult(
+            "Added nginx config file at ./{$this->config->getPathResolver()->getNginxConfigFilePath()}",
+            ExecutorStatus::SUCCESS
+        );
     }
 
     public function shouldExecute(array $context = []): bool

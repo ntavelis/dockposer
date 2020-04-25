@@ -34,13 +34,25 @@ class NginxExecutor implements ExecutorInterface
     {
         try {
             $this->filesystem->createDir($this->config->getPathResolver()->getNginxDockerDirPath());
-            $stub = $this->filesystem->compileStub($this->config->getPathResolver()->getStubsDirPath() . DIRECTORY_SEPARATOR . 'dockerfile-nginx.stub');
-            $replacedStub = str_replace('{{nginx_config_file}}', $this->config->getPathResolver()->getNginxConfigFilePath(), $stub);
+            $stubsDirPath = $this->config->getPathResolver()->getStubsDirPath();
+            $pathToStub = $stubsDirPath . DIRECTORY_SEPARATOR . 'dockerfile-nginx.stub';
+            $stub = $this->filesystem->compileStub($pathToStub);
+            $replacedStub = str_replace(
+                '{{nginx_config_file}}',
+                $this->config->getPathResolver()->getNginxConfigFilePath(),
+                $stub
+            );
             $this->filesystem->put($this->config->getPathResolver()->getNginxDockerfilePath(), $replacedStub);
         } catch (FileNotFoundException | UnableToPutContentsToFile | UnableToCreateDirectory $exception) {
-            return new ExecutorResult('Unable to create nginx dockerfile, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
+            return new ExecutorResult(
+                'Unable to create nginx dockerfile, reason: ' . $exception->getMessage(),
+                ExecutorStatus::FAIL
+            );
         }
-        return new ExecutorResult("Added nginx Dockerfile at ./{$this->config->getPathResolver()->getNginxDockerfilePath()}", ExecutorStatus::SUCCESS);
+        return new ExecutorResult(
+            "Added nginx Dockerfile at ./{$this->config->getPathResolver()->getNginxDockerfilePath()}",
+            ExecutorStatus::SUCCESS
+        );
     }
 
     public function shouldExecute(array $context = []): bool
