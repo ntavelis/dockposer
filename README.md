@@ -63,9 +63,9 @@ RUN install-php-extensions \
 	ldap
 ###> ntavelis/dockposer/php-extensions ###
 ```
-As you keep adding or removing, PHP extensions as dependencies in your composer.json file, you will see that this sections gets automatically updated, to be in sync with your dependencies.
+As you keep adding or removing PHP extensions as dependencies in your composer.json file, you will see that this sections gets automatically updated, to be in sync with your dependencies.
 Of course dockposer doesn't want to get in your way, so you are free to modify the Dockerfile outside the marked regions.
-If you do not want dockposer to maintain a section, simply delete it. Dockposer will figure it out and will not maintain the given region, which means of course that you will lose some functionality.
+If you do not want dockposer to maintain a section, simply delete it, dockposer will figure it out and will not maintain the given region, which means of course that you will lose some functionality.
 
 ## Configuration
 
@@ -145,9 +145,9 @@ For Symfony the official docker image covers you, you just need to install this 
 
 ### Laravel
 
-For Laravel, you need the bcmath extension that it is NOT pre-installed inside official docker images. Check Laravel requirements [here](https://laravel.com/docs/master/installation#server-requirements). 
+For Laravel, you need the bcmath extension that it is NOT pre-installed inside official docker images. Check Laravel requirements [in Laravel docs](https://laravel.com/docs/master/installation#server-requirements). 
 
-1. Install the package by following the instructions [link](#installation)
+1. Install the package by following the [installation instructions](#installation).
 2. Add bcmath extention to require section of composer.json
     ```json
     "require": {
