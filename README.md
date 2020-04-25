@@ -48,7 +48,7 @@ YOU CAN modify any file, dockposer is smart enough to update the contents of the
 
 Every time you run `composer install` or `composer update` dockposer will look your `require` section and if needed it will take action to sync the docker files.
 
-Do not forget to run `docker-compose --build` to rebuild your images, so that they include the dependencies you required.
+If there was an update in the docker files, do not forget to run `docker-compose --build` to rebuild your images, so that they include the dependencies you required.
 
 ## Marked regions
 
