@@ -50,22 +50,28 @@ class PhpExtensionsExecutor implements ExecutorInterface
         try {
             $initialFileContents = $this->filesystem->readFile($this->config->getPathResolver()->getPhpFpmDockerfilePath());
 
-            $extensionsString = $this->buildExtensionsString();
-            $buildTemplate = str_replace('{{extensions}}', $extensionsString, self::TEMPLATE);
-            $content = $this->marker->wrapInMarks($buildTemplate);
-            $newFileContents = $this->marker->updateMarkedData($initialFileContents, $content);
-            if ($initialFileContents === $newFileContents) {
-                return new ExecutorResult('Nothing to update', ExecutorStatus::SKIPPED);
+            if ($this->marker->isFileMarked($initialFileContents)) {
+                $extensionsString = $this->buildExtensionsString();
+                $buildTemplate = str_replace('{{extensions}}', $extensionsString, self::TEMPLATE);
+                $content = $this->marker->wrapInMarks($buildTemplate);
+                $newFileContents = $this->marker->updateMarkedData($initialFileContents, $content);
+                if ($initialFileContents === $newFileContents) {
+                    return new ExecutorResult('Nothing to update', ExecutorStatus::SKIPPED);
+                }
+                $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $newFileContents);
+
+                // Memory cleanup
+                unset($initialFileContents, $newFileContents);
+
+                return new ExecutorResult("Replaced php extensions in php-fpm dockerfile ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
             }
-            $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $newFileContents);
+            unset($initialFileContents); // Memory cleanup
+            return new ExecutorResult('file not marked', ExecutorStatus::NOT_MARKED);
         } catch (FileNotFoundException| UnableToPutContentsToFile $exception) {
-            return new ExecutorResult('Unable to replace php version in php-fpm docker file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
+            return new ExecutorResult('Unable to replace php extensions in php-fpm docker file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
 
-        // Memory cleanup
-        unset($initialFileContents, $newFileContents);
 
-        return new ExecutorResult("Replaced php version in php-fpm dockerfile ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
     }
 
     public function shouldExecute(array $context = []): bool
@@ -78,7 +84,7 @@ class PhpExtensionsExecutor implements ExecutorInterface
      */
     private function buildExtensionsString(): string
     {
-        $extensionsListFromComposerJson = $this->platformDependenciesProvider->getDependencies();
+        $extensionsListFromComposerJson = $this->platformDependenciesProvider->getDependenciesSorted();
         $preBundledExtensions = PreBundledExtensions::getExtensions();
 
         $list = array_filter($extensionsListFromComposerJson, function (string $extension) use ($preBundledExtensions) {

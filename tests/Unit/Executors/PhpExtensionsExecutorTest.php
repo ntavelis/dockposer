@@ -6,6 +6,7 @@ namespace Unit\Executors;
 
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
+use Ntavelis\Dockposer\Enum\ExecutorStatus;
 use Ntavelis\Dockposer\Executors\PhpExtensionsExecutor;
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -83,7 +84,9 @@ class PhpExtensionsExecutorTest extends TestCase
                 "###> ntavelis/dockposer/php-extensions ###"
             );
 
-        $this->executor->execute();
+        $result = $this->executor->execute();
+        $this->assertSame('Replaced php extensions in php-fpm dockerfile ./docker/php-fpm/Dockerfile', $result->getResult());
+        $this->assertSame(ExecutorStatus::SUCCESS, $result->getStatus());
     }
 
     /** @test */
@@ -122,7 +125,8 @@ class PhpExtensionsExecutorTest extends TestCase
                 "###> ntavelis/dockposer/php-extensions ###"
             );
 
-        $executor->execute();
+        $result = $executor->execute();
+        $this->assertSame(ExecutorStatus::SUCCESS, $result->getStatus());
     }
 
     /** @test */
@@ -161,6 +165,40 @@ class PhpExtensionsExecutorTest extends TestCase
                 "###> ntavelis/dockposer/php-extensions ###"
             );
 
-        $executor->execute();
+        $result = $executor->execute();
+        $this->assertSame(ExecutorStatus::SUCCESS, $result->getStatus());
+    }
+
+    /** @test */
+    public function itWillNotUpdateTheDependenciesSectionInCaseItResolvesToTheSameListOfDependencies(): void
+    {
+        $this->filesystem
+            ->expects($this->once())
+            ->method('readFile')
+            ->willReturn(
+                "###> ntavelis/dockposer/php-extensions ###\n" .
+                "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\n" .
+                "RUN install-php-extensions \\\n\t" .
+                "bcmath\n" .
+                "###> ntavelis/dockposer/php-extensions ###"
+            );
+
+        $result = $this->executor->execute();
+        $this->assertSame('Nothing to update', $result->getResult());
+        $this->assertSame(ExecutorStatus::SKIPPED, $result->getStatus());
+    }
+
+    /** @test */
+    public function ifTheFileIsNotMarkedWeDoNotPerformAnyActionsAndReturnAppropriateResult(): void
+    {
+        $this->filesystem
+            ->expects($this->once())
+            ->method('readFile')
+            ->willReturn("other content not marked file");
+
+        $result = $this->executor->execute();
+
+        $this->assertSame('file not marked', $result->getResult());
+        $this->assertSame(ExecutorStatus::NOT_MARKED, $result->getStatus());
     }
 }

@@ -72,7 +72,9 @@ class PhpVersionExecutorTest extends TestCase
             ->method('put')
             ->with('docker/php-fpm/Dockerfile', "###> ntavelis/dockposer/php-docker-image ###\nFROM php:7.2-fpm\n###> ntavelis/dockposer/php-docker-image ###");
 
-        $this->executor->execute();
+        $result = $this->executor->execute();
+
+        $this->assertSame(ExecutorStatus::SUCCESS, $result->getStatus());
     }
 
     /** @test */
@@ -94,7 +96,9 @@ class PhpVersionExecutorTest extends TestCase
             ->method('put')
             ->with('docker/php-fpm/Dockerfile', "###> ntavelis/dockposer/php-docker-image ###\nFROM php:7.3-fpm\n###> ntavelis/dockposer/php-docker-image ###");
 
-        $executor->execute();
+        $result = $executor->execute();
+
+        $this->assertSame(ExecutorStatus::SUCCESS, $result->getStatus());
     }
 
     /** @test */
@@ -108,5 +112,19 @@ class PhpVersionExecutorTest extends TestCase
 
         $result = $this->executor->execute();
         $this->assertSame(ExecutorStatus::SKIPPED, $result->getStatus());
+    }
+
+    /** @test */
+    public function ifTheFileIsNotMarkedWeDoNotPerformAnyActionsAndReturnAppropriateResult(): void
+    {
+        $this->filesystem
+            ->expects($this->once())
+            ->method('readFile')
+            ->willReturn("other content not marked file");
+
+        $result = $this->executor->execute();
+
+        $this->assertSame('file not marked', $result->getResult());
+        $this->assertSame(ExecutorStatus::NOT_MARKED, $result->getStatus());
     }
 }

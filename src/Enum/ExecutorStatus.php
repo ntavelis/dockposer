@@ -9,4 +9,5 @@ class ExecutorStatus
     public const SUCCESS = 'success';
     public const FAIL = 'fail';
     public const SKIPPED = 'skipped';
+    public const NOT_MARKED = 'not_marked';
 }

@@ -59,15 +59,15 @@ class PhpVersionExecutor implements ExecutorInterface
                     return new ExecutorResult('Nothing to update', ExecutorStatus::SKIPPED);
                 }
                 $this->filesystem->put($this->config->getPathResolver()->getPhpFpmDockerfilePath(), $newFileContents);
+
+                unset($initialFileContents, $newFileContents); // Memory cleanup
+                return new ExecutorResult("Replaced php version in php-fpm dockerfile ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
             }
+            unset($initialFileContents); // Memory cleanup
+            return new ExecutorResult('file not marked', ExecutorStatus::NOT_MARKED);
         } catch (FileNotFoundException| UnableToPutContentsToFile $exception) {
             return new ExecutorResult('Unable to replace php version in php-fpm docker file, reason: ' . $exception->getMessage(), ExecutorStatus::FAIL);
         }
-
-        // Memory cleanup
-        unset($initialFileContents, $newFileContents);
-
-        return new ExecutorResult("Replaced php version in php-fpm dockerfile ./{$this->config->getPathResolver()->getPhpFpmDockerfilePath()}", ExecutorStatus::SUCCESS);
     }
 
     public function shouldExecute(array $context = []): bool
