@@ -4,7 +4,6 @@ on: [push]
 jobs:
     unit_tests_php72:
         name: Unit tests PHP 7.2
-        needs: install_dev_dependencies
         runs-on: ubuntu-latest
         steps:
             -   uses: docker://php:7.2
@@ -27,11 +26,19 @@ jobs:
             -   uses: actions/checkout@v1
             -   run: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpunit
-    codesniffer_php72:
-        name: Code style violations
+    PSR12_code_style:
+        name: PSR 12 Code style checks
         runs-on: ubuntu-latest
         steps:
             -   uses: docker://php:7.2
             -   uses: actions/checkout@v1
             -   run: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpcs --standard=PSR12 src
+    Static_analysis:
+        name: Static analysis checks
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: docker://php:7.2
+            -   uses: actions/checkout@v1
+            -   run: composer install --no-ansi --no-progress
+            -   run: vendor/bin/phpstan analyse -l 8 src tests
