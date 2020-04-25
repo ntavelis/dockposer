@@ -7,6 +7,7 @@ namespace Ntavelis\Dockposer\Tests\Unit\Executors;
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;
 use Ntavelis\Dockposer\DockposerConfig;
 use Ntavelis\Dockposer\Enum\ExecutorStatus;
+use Ntavelis\Dockposer\Exception\FileNotFoundException;
 use Ntavelis\Dockposer\Executors\PhpExtensionsExecutor;
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -233,5 +234,16 @@ class PhpExtensionsExecutorTest extends TestCase
 
         $result = $executor->execute();
         $this->assertSame(ExecutorStatus::SUCCESS, $result->getStatus());
+    }
+
+    /** @test */
+    public function ifThereIsAFilesystemErrorWeAbortWithAppropriateMessage(): void
+    {
+        $this->filesystem->expects($this->once())->method('readFile')->willThrowException(new FileNotFoundException('can not read file'));
+
+        $result = $this->executor->execute();
+
+        $this->assertSame('Unable to replace php extensions in php-fpm docker file, reason: can not read file', $result->getResult());
+        $this->assertSame(ExecutorStatus::FAIL, $result->getStatus());
     }
 }

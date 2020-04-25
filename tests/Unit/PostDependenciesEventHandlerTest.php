@@ -104,4 +104,18 @@ class PostDependenciesEventHandlerTest extends TestCase
 
         $this->executor->run();
     }
+
+    /** @test */
+    public function ifAnExecutorExpectsNotToBeExecutedSkippItAndGoToTheNextOne(): void
+    {
+        $executor1 = $this->createMock(ExecutorInterface::class);
+        $executor1->expects($this->never())->method('execute');
+        $executor1->expects($this->once())->method('shouldExecute')->willReturn(false);
+        $executor2 = $this->createMock(ExecutorInterface::class);
+        $executor2->expects($this->once())->method('execute');
+        $executor2->expects($this->once())->method('shouldExecute')->willReturn(true);
+        $this->executorsFactory->expects($this->once())->method('createDefaultExecutors')->willReturn([$executor1, $executor2]);
+
+        $this->executor->run();
+    }
 }

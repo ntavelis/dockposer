@@ -100,4 +100,14 @@ class FileMarkerTest extends TestCase
         $actual = $this->fileMarker->updateMarkedData($fileContents, $this->fileMarker->wrapInMarks($updatedMarkedSectionText));
         $this->assertSame($expects, $actual);
     }
+
+    /** @test */
+    public function ifTheFileDoesNotContainTheMarkerWeReturnTheFileContentsAsTheyWere(): void
+    {
+        $fileContents = 'No markers inside the file';
+
+        $content = 'New Content to be added to the file inside the markers';
+        $actual = $this->fileMarker->updateMarkedData($fileContents, $this->fileMarker->wrapInMarks($content));
+        $this->assertSame($fileContents, $actual);
+    }
 }
