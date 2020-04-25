@@ -40,8 +40,10 @@ class Filesystem implements FilesystemInterface
     {
         $location = $this->applyPathPrefix($path);
         if (!is_dir($location)) {
-            if (false === @mkdir($location, 0777, false)
-                || false === is_dir($location)) {
+            if (
+                false === @mkdir($location, 0777, false)
+                || false === is_dir($location)
+            ) {
                 throw new UnableToCreateDirectory('Unable to create directory ' . $location);
             }
         }

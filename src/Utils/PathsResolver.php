@@ -25,12 +25,16 @@ class PathsResolver
 
     public function getNginxDockerfilePath(): string
     {
-        return $this->getNginxDockerDirPath() . DIRECTORY_SEPARATOR . $this->dockposerConfig->getExecutorConfig('dockerfile_name');
+        return $this->getNginxDockerDirPath() .
+            DIRECTORY_SEPARATOR .
+            $this->dockposerConfig->getExecutorConfig('dockerfile_name');
     }
 
     public function getNginxDockerDirPath(): string
     {
-        return $this->getDockerDirPath() . DIRECTORY_SEPARATOR . $this->dockposerConfig->getExecutorConfig('nginx_docker_dir');
+        return $this->getDockerDirPath() .
+            DIRECTORY_SEPARATOR .
+            $this->dockposerConfig->getExecutorConfig('nginx_docker_dir');
     }
 
     public function getDockerDirPath(): string
@@ -40,12 +44,16 @@ class PathsResolver
 
     public function getPhpFpmDockerfilePath(): string
     {
-        return $this->getPhpFpmDockerDirPath() . DIRECTORY_SEPARATOR . $this->dockposerConfig->getExecutorConfig('dockerfile_name');
+        return $this->getPhpFpmDockerDirPath() .
+            DIRECTORY_SEPARATOR .
+            $this->dockposerConfig->getExecutorConfig('dockerfile_name');
     }
 
     public function getPhpFpmDockerDirPath(): string
     {
-        return $this->getDockerDirPath() . DIRECTORY_SEPARATOR . $this->dockposerConfig->getExecutorConfig('fpm_docker_dir');
+        return $this->getDockerDirPath() .
+            DIRECTORY_SEPARATOR .
+            $this->dockposerConfig->getExecutorConfig('fpm_docker_dir');
     }
 
     public function getStubsDirPath(): string
@@ -55,6 +63,8 @@ class PathsResolver
 
     public function getNginxConfigFilePath()
     {
-        return $this->getNginxDockerDirPath() . DIRECTORY_SEPARATOR . $this->dockposerConfig->getExecutorConfig('nginx_config_file');
+        return $this->getNginxDockerDirPath() .
+            DIRECTORY_SEPARATOR .
+            $this->dockposerConfig->getExecutorConfig('nginx_config_file');
     }
 }
