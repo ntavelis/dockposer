@@ -76,7 +76,7 @@ class PlatformDependenciesProviderTest extends TestCase
     }
 
     /** @test */
-    public function itCanResolveTheDependenciesSorted()
+    public function itCanResolveTheDependenciesSorted(): void
     {
         $dependencies = $this->provider->getDependenciesSorted();
 
@@ -86,7 +86,7 @@ class PlatformDependenciesProviderTest extends TestCase
             'iconv',
         ], $dependencies, 'Dependencies are not Sorted');
     }
-    
+
     /** @test */
     public function ifWeGetTheDependenciesSortedTheInitialListHasNotBeenAltered(): void
     {

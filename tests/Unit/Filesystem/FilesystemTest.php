@@ -48,7 +48,7 @@ class FilesystemTest extends TestCase
     }
 
     /** @test */
-    public function itCanCreateAFileWithGivenContents()
+    public function itCanCreateAFileWithGivenContents(): void
     {
         $file = 'test.txt';
         $this->filesystem->put($file, 'Make sure it works!');
@@ -67,7 +67,7 @@ class FilesystemTest extends TestCase
     }
 
     /** @test */
-    public function ifWeCanNotUpdateTheContentsOfAGivenFileWeThrowException()
+    public function ifWeCanNotUpdateTheContentsOfAGivenFileWeThrowException(): void
     {
         $this->expectException(UnableToPutContentsToFile::class);
 
@@ -77,7 +77,7 @@ class FilesystemTest extends TestCase
     }
 
     /** @test */
-    public function itCanCreateADirectory()
+    public function itCanCreateADirectory(): void
     {
         $this->filesystem->createDir('test');
 
@@ -88,21 +88,21 @@ class FilesystemTest extends TestCase
     }
 
     /** @test */
-    public function ifWeCanNotCreateADirectoryWeThrowAnException()
+    public function ifWeCanNotCreateADirectoryWeThrowAnException(): void
     {
         $this->expectException(UnableToCreateDirectory::class);
         $this->filesystem->createDir('test/nested/dir');
     }
 
     /** @test */
-    public function itCanCheckIfAFileExists()
+    public function itCanCheckIfAFileExists(): void
     {
         $this->assertTrue($this->filesystem->fileExists('FilesystemTest.php'));
         $this->assertFalse($this->filesystem->fileExists('NotExistent.php'));
     }
 
     /** @test */
-    public function itCanCheckIfADirExists()
+    public function itCanCheckIfADirExists(): void
     {
         $this->assertTrue($this->filesystem->dirExists('../Filesystem'));
         $this->assertFalse($this->filesystem->dirExists('not_a_dir'));

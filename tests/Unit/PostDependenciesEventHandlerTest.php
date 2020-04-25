@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit;
+namespace Ntavelis\Dockposer\Tests\Unit;
 
 use Composer\IO\IOInterface;
 use Ntavelis\Dockposer\Contracts\ExecutorInterface;

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class ExecutorResultTest extends TestCase
 {
     /**
-     * @var string
+     * @var ExecutorResult
      */
     private $message;
 
@@ -25,7 +25,7 @@ class ExecutorResultTest extends TestCase
     /** @test */
     public function itCanReturnAResultAndAStatus(): void
     {
-        $this->assertSame('create file successfully',$this->message->getResult());
-        $this->assertSame(ExecutorStatus::SUCCESS,$this->message->getStatus());
+        $this->assertSame('create file successfully', $this->message->getResult());
+        $this->assertSame(ExecutorStatus::SUCCESS, $this->message->getStatus());
     }
 }

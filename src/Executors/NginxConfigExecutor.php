@@ -30,8 +30,7 @@ class NginxConfigExecutor implements ExecutorInterface
     public function execute(): ExecutorResult
     {
         try {
-            $pathToStub = $this->config->getPathResolver()->getStubsDirPath() . DIRECTORY_SEPARATOR . 'nginx-conf.stub';
-            $stub = $this->filesystem->compileStub($pathToStub);
+            $stub = $this->filesystem->compileStub($this->config->getPathResolver()->getStubsDirPath() . DIRECTORY_SEPARATOR . 'nginx-conf.stub');
             $this->filesystem->put($this->config->getPathResolver()->getNginxConfigFilePath(), $stub);
         } catch (FileNotFoundException | UnableToPutContentsToFile $exception) {
             return new ExecutorResult(
