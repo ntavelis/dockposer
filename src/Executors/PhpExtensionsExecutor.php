@@ -11,10 +11,11 @@ use Ntavelis\Dockposer\Exception\UnableToPutContentsToFile;
 use Ntavelis\Dockposer\Message\ExecutorResult;
 use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 use Ntavelis\Dockposer\Utils\FileMarker;
+use Ntavelis\Dockposer\Utils\PreBundledExtensions;
 
 class PhpExtensionsExecutor implements ExecutorInterface
 {
-    private const TEMPLATE = "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\nRUN install-php-extensions {{extensions}}";
+    private const TEMPLATE = "COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/\nRUN install-php-extensions \n{{extensions}}";
     private const CONFIG_MARKER = 'ntavelis/dockposer/php-extensions';
     /**
      * @var FilesystemInterface
@@ -49,8 +50,7 @@ class PhpExtensionsExecutor implements ExecutorInterface
         try {
             $initialFileContents = $this->filesystem->readFile($this->config->getPathResolver()->getPhpFpmDockerfilePath());
 
-            $extensionsList = $this->platformDependenciesProvider->getDependencies();
-            $extensionsString = implode(' ', $extensionsList);
+            $extensionsString = $this->buildExtensionsString();
             $buildTemplate = str_replace('{{extensions}}', $extensionsString, self::TEMPLATE);
             $content = $this->marker->wrapInMarks($buildTemplate);
             $newFileContents = $this->marker->updateMarkedData($initialFileContents, $content);
@@ -72,5 +72,20 @@ class PhpExtensionsExecutor implements ExecutorInterface
     public function shouldExecute(array $context = []): bool
     {
         return $this->filesystem->fileExists($this->config->getPathResolver()->getPhpFpmDockerfilePath());
+    }
+
+    /**
+     * @return string
+     */
+    private function buildExtensionsString(): string
+    {
+        $extensionsListFromComposerJson = $this->platformDependenciesProvider->getDependencies();
+        $preBundledExtensions = PreBundledExtensions::getExtensions();
+
+        $list = array_filter($extensionsListFromComposerJson, function (string $extension) use ($preBundledExtensions) {
+            return !in_array($extension, $preBundledExtensions);
+        });
+
+        return implode("\n", $list);
     }
 }
