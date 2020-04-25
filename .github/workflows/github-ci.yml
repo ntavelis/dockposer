@@ -27,7 +27,7 @@ jobs:
             -   run: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpunit
     PSR12_code_style:
-        name: PSR 12 Code style checks
+        name: PSR 12 Codestyle checks
         runs-on: ubuntu-latest
         steps:
             -   uses: docker://php:7.2
