@@ -59,7 +59,7 @@ class PostDependenciesEventHandlerTest extends TestCase
         $executor1->expects($this->once())->method('shouldExecute')->willReturn(true);
         $this->executorsFactory->expects($this->once())->method('createDefaultExecutors')->willReturn([$executor1]);
 
-        $this->io->expects($this->once())->method('write')->with('Dockposer: <info>Successful operation<info>');
+        $this->io->expects($this->once())->method('write')->with('<info>Dockposer: Successful operation<info>');
 
         $this->executor->run();
     }
@@ -127,7 +127,7 @@ class PostDependenciesEventHandlerTest extends TestCase
         $executor1->expects($this->once())->method('shouldExecute')->willReturn(true);
         $this->executorsFactory->expects($this->once())->method('createDefaultExecutors')->willReturn([$executor1]);
 
-        $this->io->expects($this->once())->method('write')->with('Dockposer: <info>A message<info>');
+        $this->io->expects($this->once())->method('write')->with('<info>Dockposer: A message<info>');
 
         $this->executor->run();
     }

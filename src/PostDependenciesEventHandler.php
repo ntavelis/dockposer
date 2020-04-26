@@ -52,6 +52,6 @@ class PostDependenciesEventHandler
 
     private function writeSuccess(string $message): void
     {
-        $this->io->write(self::PACKAGE_NAME . ': ' . '<info>' . $message . '<info>');
+        $this->io->write('<info>' . self::PACKAGE_NAME . ': ' . $message . '<info>');
     }
 }

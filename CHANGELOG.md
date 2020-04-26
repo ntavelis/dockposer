@@ -6,6 +6,10 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [Unreleased]
 
+## [0.1.1] - 2020-04-26
+### Added
+- Fixing wrong console output
+
 ## [0.1.0] - 2020-04-26
 ### Added
 - First public release of the package
