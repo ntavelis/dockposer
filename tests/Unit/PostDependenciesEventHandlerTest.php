@@ -59,7 +59,7 @@ class PostDependenciesEventHandlerTest extends TestCase
         $executor1->expects($this->once())->method('shouldExecute')->willReturn(true);
         $this->executorsFactory->expects($this->once())->method('createDefaultExecutors')->willReturn([$executor1]);
 
-        $this->io->expects($this->once())->method('writeError')->with('<info>Successful operation<info>');
+        $this->io->expects($this->once())->method('write')->with('Dockposer: <info>Successful operation<info>');
 
         $this->executor->run();
     }
@@ -72,7 +72,7 @@ class PostDependenciesEventHandlerTest extends TestCase
         $executor1->expects($this->once())->method('shouldExecute')->willReturn(true);
         $this->executorsFactory->expects($this->once())->method('createDefaultExecutors')->willReturn([$executor1]);
 
-        $this->io->expects($this->once())->method('writeError')->with('Operation failed');
+        $this->io->expects($this->once())->method('writeError')->with('Dockposer: Operation failed');
 
         $this->executor->run();
     }
@@ -115,6 +115,19 @@ class PostDependenciesEventHandlerTest extends TestCase
         $executor2->expects($this->once())->method('execute');
         $executor2->expects($this->once())->method('shouldExecute')->willReturn(true);
         $this->executorsFactory->expects($this->once())->method('createDefaultExecutors')->willReturn([$executor1, $executor2]);
+
+        $this->executor->run();
+    }
+
+    /** @test */
+    public function itWillPrefixTheOutputWithThePackageName(): void
+    {
+        $executor1 = $this->createMock(ExecutorInterface::class);
+        $executor1->expects($this->once())->method('execute')->willReturn(new ExecutorResult('A message', ExecutorStatus::SUCCESS));
+        $executor1->expects($this->once())->method('shouldExecute')->willReturn(true);
+        $this->executorsFactory->expects($this->once())->method('createDefaultExecutors')->willReturn([$executor1]);
+
+        $this->io->expects($this->once())->method('write')->with('Dockposer: <info>A message<info>');
 
         $this->executor->run();
     }

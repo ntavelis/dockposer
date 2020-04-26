@@ -10,6 +10,7 @@ use Ntavelis\Dockposer\Factory\ExecutorsFactory;
 
 class PostDependenciesEventHandler
 {
+    private const PACKAGE_NAME = 'Dockposer';
     /**
      * @var IOInterface
      */
@@ -45,16 +46,12 @@ class PostDependenciesEventHandler
                 continue;
             }
 
-            $this->io->writeError($result->getResult());
+            $this->io->writeError(self::PACKAGE_NAME . ': ' . $result->getResult());
         }
     }
 
-    /**
-     * In order to display a success message we need to use the write error function.
-     * Composer kept the interface like that, probably for backwards compatibility
-     */
     private function writeSuccess(string $message): void
     {
-        $this->io->writeError('<info>' . $message . '<info>');
+        $this->io->write(self::PACKAGE_NAME . ': ' . '<info>' . $message . '<info>');
     }
 }
