@@ -159,19 +159,21 @@ For Laravel, you need the bcmath extension that it is NOT pre-installed inside o
  
 ## How to debug package with xdebug - For contributing to this repository
 
-This sections decribes how to setup your local environment for development on this package. You do not need to do anything described in here if your are not going to contribute. :D
+This sections describes how to setup your local environment for development on this package. As a user of this package you do not need to do anything described in this section.
 
 ### Environment setup
 1. Given the following phpstorm config:
 ![image](assets/phpstorm_xdebug_settings.png)
 
-    * Note: here we name the server configuration as `application`, this name should match the `PHP_IDE_CONFIG="serverName=application"` in the command for debugging.
+    * Note: Here we name the server configuration as `application`, this name should match the `PHP_IDE_CONFIG="serverName=application"` in the command for debugging.
 
-    * Note: it is a good idea to uncheck this configuration from phpstorm, settings -> langauges & frameworks -> debug -> uncheck: Force break at first line when no path mapping specified.
+    * Note: It is a good idea to uncheck this configuration from phpstorm, settings -> languages & frameworks -> debug -> uncheck: Force break at first line when no path mapping specified.
 
 2. Create another project on the same level as this package. So you have the below directory structure:
-`/home/antavelis/webprojects/dockposer` -> clone of the package inside here
-`/home/antavelis/webprojects/demoapp` -> a php application with a composer.json file
+
+    `/home/antavelis/webprojects/dockposer` -> clone of the package inside here
+    
+    `/home/antavelis/webprojects/demoapp` -> a php application with a composer.json file
 
 3. In the demoapp location require the local version of the dockpose package:
 
@@ -194,9 +196,9 @@ This sections decribes how to setup your local environment for development on th
     }
     ``` 
 
-    * Note: the url path must point to the location of the package. Composer will symlink the package and it will recognize it as a plugin.
+    * Note: The url path must point to the location of the package. Composer will symlink the package and, it will recognize it as a plugin.
 
-4. You will need docker and docker-compose, please install them before preceding.
+4. You will need docker and docker-compose, please install them before proceeding.
 
 ### Execute the debug command
 1. Navigate to the package's root directory, e.g `/home/antavelis/webprojects/dockposer`
