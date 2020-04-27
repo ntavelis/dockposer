@@ -1,3 +1,5 @@
+![CI](https://github.com/ntavelis/dockposer/workflows/CI/badge.svg)
+
 # Dockposer
 
 Dockposer is a composer plugin that automatically generates and keeps in sync docker files with php extensions declared in composer.json.
