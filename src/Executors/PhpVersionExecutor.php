@@ -50,17 +50,11 @@ class PhpVersionExecutor implements ExecutorInterface
     {
         try {
             $phpFpmDockerfilePath = $this->config->getPathResolver()->getPhpFpmDockerfilePath();
-            $initialFileContents = $this
-                ->filesystem
-                ->readFile($phpFpmDockerfilePath);
+            $initialFileContents = $this->filesystem->readFile($phpFpmDockerfilePath);
 
             if ($this->marker->isFileMarked($initialFileContents)) {
-                $buildTemplate = str_replace(
-                    '{{php_version}}',
-                    $this->platformDependenciesProvider->getPhpVersion(),
-                    self::TEMPLATE
-                );
-                $content = $this->marker->wrapInMarks($buildTemplate);
+                $phpVersionString = $this->buildPhpVersionString();
+                $content = $this->marker->wrapInMarks($phpVersionString);
                 $newFileContents = $this->marker->updateMarkedData($initialFileContents, $content);
                 if ($initialFileContents === $newFileContents) {
                     return new ExecutorResult('Nothing to update', ExecutorStatus::SKIPPED);
@@ -86,5 +80,14 @@ class PhpVersionExecutor implements ExecutorInterface
     public function shouldExecute(array $context = []): bool
     {
         return $this->filesystem->fileExists($this->config->getPathResolver()->getPhpFpmDockerfilePath());
+    }
+
+    private function buildPhpVersionString(): string
+    {
+        return str_replace(
+            '{{php_version}}',
+            $this->platformDependenciesProvider->getPhpVersion(),
+            self::TEMPLATE
+        );
     }
 }

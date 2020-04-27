@@ -37,11 +37,7 @@ class NginxExecutor implements ExecutorInterface
             $stubsDirPath = $this->config->getPathResolver()->getStubsDirPath();
             $pathToStub = $stubsDirPath . DIRECTORY_SEPARATOR . 'dockerfile-nginx.stub';
             $stub = $this->filesystem->compileStub($pathToStub);
-            $replacedStub = str_replace(
-                '{{nginx_config_file}}',
-                $this->config->getPathResolver()->getNginxConfigFilePath(),
-                $stub
-            );
+            $replacedStub = $this->buildReplacedStubString($stub);
             $this->filesystem->put($this->config->getPathResolver()->getNginxDockerfilePath(), $replacedStub);
         } catch (FileNotFoundException | UnableToPutContentsToFile | UnableToCreateDirectory $exception) {
             return new ExecutorResult(
@@ -58,5 +54,14 @@ class NginxExecutor implements ExecutorInterface
     public function shouldExecute(array $context = []): bool
     {
         return !$this->filesystem->fileExists($this->config->getPathResolver()->getNginxDockerfilePath());
+    }
+
+    private function buildReplacedStubString(string $stub): string
+    {
+        return str_replace(
+            '{{nginx_config_file}}',
+            $this->config->getPathResolver()->getNginxConfigFilePath(),
+            $stub
+        );
     }
 }
