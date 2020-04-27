@@ -8,12 +8,12 @@ jobs:
         steps:
             -   uses: docker://php:7.2
             -   uses: actions/checkout@v1
-            -   uses: codecov/codecov-action@v1
-                with:
-                    file: ./build/index.xml
-                    flags: unittests
             -   run: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpunit --coverage-xml build
+            -   uses: codecov/codecov-action@v1
+                    with:
+                        file: ./build/index.xml
+                        flags: unittests
     unit_tests_php73:
         name: Unit tests PHP 7.3
         runs-on: ubuntu-latest
