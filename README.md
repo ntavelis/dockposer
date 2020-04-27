@@ -21,7 +21,11 @@ With this composer-plugin by declaring the php extensions in your composer.json,
     ```shell script
     composer require ntavelis/dockposer --dev
     ```
-2. Run `composer install` or `composer update` to execute it.
+2. Run `composer install` or `composer update` to trigger the package to run.
+3. Run `docker-compose up` to initialize and run the docker containers.
+4. Open `http://localhost` in your browser to see the front page of your application.
+
+Note: The package keeps checking your dependencies, if you notice with your vcs (git) that it updated the Dockerfiles, you need to rebuild the docker images by running `docker-compose up --build`. 
 
 ## Prerequisites
 
@@ -40,7 +44,7 @@ The first time you will run this package it will generate the below files:
 
 | File Name          | Location                    | Description                                                              |
 |--------------------|-----------------------------|--------------------------------------------------------------------------|
-| docker-compose/yml | . (project root)            | docker-compose file, initializes the project's containers                |
+| docker-compose.yml | . (project root)            | docker-compose file, initializes the project's containers                |
 | Dockerfile         | ./docker/nginx/Dockerfile   | Dockerfile which contains instructions for the creation of nginx image   |
 | default.conf       | ./docker/nginx/default.conf | Nginx configuration, configures nginx.                                   |
 | Dockerfile         | ./docker/php-fpm/Dockerfile | Dockerfile which contains instructions for the creation of php-fpm image |
@@ -51,7 +55,7 @@ YOU CAN modify any file, dockposer is smart enough to update the contents of the
 
 Every time you run `composer install` or `composer update` dockposer will look your `require` section and if needed it will take action to sync the docker files.
 
-If there was an update in the docker files, do not forget to run `docker-compose --build` to rebuild your images, so that they include the dependencies you required.
+If there was an update in the docker files, do not forget to run `docker-compose up --build` to rebuild your images, so that they include the dependencies you required.
 
 ## Marked regions
 
