@@ -29,7 +29,7 @@ The package will generate `docker` and `docker-compose` files. So I assume you h
 3. Run `docker-compose up` to initialize and run the docker containers.
 4. Open `http://localhost` in your browser to see the front page of your application.
 
-Note: The package keeps checking your dependencies, if you notice with your vcs (git) that it updated the Dockerfiles, you need to rebuild the docker images by running `docker-compose up --build`. 
+Note: The package keeps checking your dependencies, if you notice with your vcs (git) that it updated any docker files, you need to rebuild the docker images by running `docker-compose up --build`. 
 
 ## How to add php-extensions
 
