@@ -1,4 +1,5 @@
 ![CI](https://github.com/ntavelis/dockposer/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/ntavelis/dockposer/branch/master/graph/badge.svg)](https://codecov.io/gh/ntavelis/dockposer)
 
 # Dockposer
 
