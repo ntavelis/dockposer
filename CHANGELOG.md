@@ -6,6 +6,10 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [Unreleased]
 
+## [0.1.3] - 2020-04-27
+### Changed
+- Adding the new version of readme
+
 ## [0.1.2] - 2020-04-27
 ### Added
 - Cleaning up code inconsistencies
