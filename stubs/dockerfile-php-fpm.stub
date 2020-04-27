@@ -20,6 +20,9 @@ COPY . /srv/app
 # Install composer inside the image
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# install zip and unzip unix packages, required from composer
+RUN apt update && apt install zip unzip
+
 # Install and configure xdebug inside the image
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN echo 'xdebug.default_enable = 1' >> /usr/local/etc/php/php.ini
