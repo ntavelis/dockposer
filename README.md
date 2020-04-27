@@ -148,7 +148,7 @@ Pre-installed php extensions inside official php images:
 ## PHP Frameworks
 
 ### Symfony
-For Symfony the official docker image covers you, you just need to install this package and run `composer install` and `docker-compose up`. 
+For Symfony the official docker image covers you, you just need to follow the [installation instructions](#installation). 
 
 ### Laravel
 
