@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ntavelis\Dockposer;
 
-use Ntavelis\Dockposer\Exception\ConfigValueNotFoundException;
 use Ntavelis\Dockposer\Utils\PathsResolver;
 
 class DockposerConfig
