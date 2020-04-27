@@ -155,7 +155,7 @@ For Symfony the official docker image covers you, you just need to follow the [i
 For Laravel, you need the bcmath extension that it is NOT pre-installed inside official docker images. Check Laravel requirements [in Laravel docs](https://laravel.com/docs/master/installation#server-requirements). 
 
 1. Install the package by following the [installation instructions](#installation).
-2. Add bcmath extention to require section of composer.json
+2. Add bcmath extention to the `require` section of composer.json
     ```json
     "require": {
             "ext-bcmath": "*",
