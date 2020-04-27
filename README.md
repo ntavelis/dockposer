@@ -63,7 +63,7 @@ RUN install-php-extensions \
 	ldap
 ###> ntavelis/dockposer/php-extensions ###
 ```
-As you keep adding or removing php extensions as dependencies in your composer.json file, you will see that this sections gets automatically updated, to be in sync with your dependencies.
+As you keep adding or removing php extensions as dependencies in your composer.json file, you will see that this section gets automatically updated, to be in sync with your dependencies.
 Of course dockposer doesn't want to get in your way, so you are free to modify the Dockerfile outside the marked regions.
 If you do not want dockposer to maintain a section, simply delete it, dockposer will figure it out and will not maintain the given region, which means of course that you will lose some functionality.
 
