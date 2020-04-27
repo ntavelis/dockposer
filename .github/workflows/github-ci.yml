@@ -13,6 +13,7 @@ jobs:
             -   uses: codecov/codecov-action@v1
                 with:
                     file: ./build/index.xml
+                    token: $CODECOV_TOKEN
                     flags: unittests
     unit_tests_php73:
         name: Unit tests PHP 7.3
