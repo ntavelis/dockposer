@@ -33,7 +33,7 @@ Note: The package keeps checking your dependencies, if you notice with your vcs 
 
 ## How to add php-extensions
 
-To avoid inconsistencies between your dependencies the installed extensions, and the ones that are locked in the composer.lock, the following approach is being highly recommended.
+To avoid inconsistencies between the installed php extensions, and the ones that are locked in the composer.lock, the following approach is being highly recommended.
 
 Let's say we want to add these dependencies to our system `ext-gmp` and `ext-bcmath`, the recommended procedure is:
 
