@@ -15,6 +15,10 @@ It is considered a good practice to declare your system's dependencies in the co
 
 With this composer-plugin by declaring the php extensions in your composer.json, you get the additional benefit of keeping in sync the required extensions with your dockerfile definitions.
 
+## Prerequisites
+
+The package will generate `docker` and `docker-compose` files. So I assume you have them installed in your system.
+
 ## Installation
 
 1. Require the plugin.
@@ -26,10 +30,6 @@ With this composer-plugin by declaring the php extensions in your composer.json,
 4. Open `http://localhost` in your browser to see the front page of your application.
 
 Note: The package keeps checking your dependencies, if you notice with your vcs (git) that it updated the Dockerfiles, you need to rebuild the docker images by running `docker-compose up --build`. 
-
-## Prerequisites
-
-The package will generate `docker` and `docker-compose` files. So I assume you have them installed in your system.
 
 ## How to add php-extensions
 
