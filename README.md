@@ -49,7 +49,7 @@ Let's say we want to add these dependencies to our system `ext-gmp` and `ext-bcm
 3. Run `docker-compose up --build` to rebuild the docker images, this will build the php image with the `ext-gmp`, `ext-bcmath` included.
 4. Run `docker-compose run --rm php-fpm composer update ext-gmp ext-bcmath`, to update the composer.lock file. It is worth noticing here that we are executing the composer update from inside the php-fpm container. This is considered good practice, because it avoids the problem of getting a composer error for missing extensions in our local system.
 
-By following the above approach we are replace the images with images that include our new required php extensions, in this example `ext-gmp` and `ext-bcmath` extensions. Additionally we update the composer.lock file by running the composer update command, from the php-fpm container.
+By following the above approach we replace the images with images that include our new required php extensions, in this example `ext-gmp` and `ext-bcmath` extensions. Additionally we update the composer.lock file by running the composer update command, from the php-fpm container.
 
 ## How it works
 
