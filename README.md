@@ -25,7 +25,7 @@ With this composer-plugin by declaring the php extensions in your composer.json,
 The package will generate `docker` and `docker-compose` files. So I assume you have them installed in your system.
 ## How it works
 
-This packages gets triggered every time after the composer tries to resolve your dependencies, e.g `composer install` or `composer update` will trigger this package to run.
+This package gets triggered every time after the composer tries to resolve your dependencies, e.g `composer install` or `composer update` will trigger this package to run.
 
 Dockposer will read the `require` section of your composer.json file and will generate docker instructions to install the php extensions you have declared in your `require` section. The php extentions have the `ext` prefix, e.g. `ext-amqp`, `ext-ldap`.
 It will also read your declared php version in the `require` section of composer.json and will generate FROM instruction in docker file to pull the official docker image with the same version. If the php version is not declared in the composer.json, it will default to the php version that executes the composer. 
@@ -159,7 +159,7 @@ For Laravel, you need the bcmath extension that it is NOT pre-installed inside o
  
 ## How to debug package with xdebug - For contributing to this repository
 
-This sections describes how to setup your local environment for development on this package. As a user of this package you do not need to do anything described in this section.
+This section describes how to setup your local environment for development on this package. As a user of this package you do not need to do anything described in this section.
 
 ### Environment setup
 1. Given the following phpstorm config:
