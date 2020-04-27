@@ -6,6 +6,10 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [Unreleased]
 
+## [0.2.0] - 2020-04-27
+### Changed
+- Updated default php-fpm dockerfile to add zip, unzip extensions
+
 ## [0.1.3] - 2020-04-27
 ### Changed
 - Adding the new version of readme
