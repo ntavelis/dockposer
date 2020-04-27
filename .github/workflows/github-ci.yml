@@ -12,7 +12,7 @@ jobs:
             -   run: ./vendor/bin/phpunit --coverage-clover=build/coverage.xml
             -   uses: codecov/codecov-action@v1
                 with:
-                    file: ./build/index.xml
+                    file: ./build/coverage.xml
                     token: $CODECOV_TOKEN
                     flags: unittests
     unit_tests_php73:
