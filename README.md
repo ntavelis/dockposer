@@ -30,6 +30,27 @@ Note: The package keeps checking your dependencies, if you notice with your vcs 
 ## Prerequisites
 
 The package will generate `docker` and `docker-compose` files. So I assume you have them installed in your system.
+
+## How to add php-extensions
+
+To avoid inconsistencies between your dependencies the installed extensions, and the ones that are locked in the composer.lock, the following approach is being highly recommended.
+
+Let's say we want to add these dependencies to our system `ext-gmp` and `ext-bcmath`, the recommended procedure is:
+
+1. Add the extensions to `require` section of composer.json
+    ```json
+    "require": {
+            "ext-bcmath": "*",
+            "ext-gmp": "*",
+        }
+    ```
+2. Run `composer install` to trigger the package to run, this will generate the required instructions, inside the docker files, to install the php extensions.
+3. Kill any running containers with `docker-compose down`
+3. Run `docker-compose up --build` to rebuild the docker images, this will build the php image with the `ext-gmp`, `ext-bcmath` included.
+4. Run `docker-compose run --rm php-fpm composer install`, to update the composer.lock file. It is worth noticing here that we are executing the composer update from inside the php-fpm container. this is considered good practice, because it avoids the problem of getting a composer error for missing extensions in our local system.
+
+By following the above approach we are replace the images with images that include our new required php extensions, in this example `ext-gmp` and `ext-bcmath` extensions. Additionally we update the composer.lock file by running the composer update command, from the php-fpm container.
+
 ## How it works
 
 This package gets triggered every time after the composer tries to resolve your dependencies, e.g `composer install` or `composer update` will trigger this package to run.
@@ -158,7 +179,7 @@ For Laravel, you need the bcmath extension that it is NOT pre-installed inside o
 2. Add bcmath extention to the `require` section of composer.json
     ```json
     "require": {
-            "ext-bcmath": "*",
+        "ext-bcmath": "*",
     }
     ```
 3. Run `composer install` to trigger the plugin to run.
