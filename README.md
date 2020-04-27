@@ -25,7 +25,7 @@ The package will generate `docker` and `docker-compose` files. So I assume you h
     ```shell script
     composer require ntavelis/dockposer --dev
     ```
-2. Run `composer install` or `composer update` to trigger the package to run.
+2. Run `composer install` to trigger the package to run.
 3. Run `docker-compose up` to initialize and run the docker containers.
 4. Open `http://localhost` in your browser to see the front page of your application.
 
