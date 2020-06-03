@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ntavelis\Dockposer\Tests\Unit\Executors;
 
 use Ntavelis\Dockposer\Contracts\FilesystemInterface;

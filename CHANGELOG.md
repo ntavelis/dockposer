@@ -6,6 +6,11 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [Unreleased]
 
+## [0.2.2] - 2020-06-03
+
+### Changed
+- Added strict type declarations, to some php files.
+
 ## [0.2.1] - 2020-05-12
 
 ### Changed

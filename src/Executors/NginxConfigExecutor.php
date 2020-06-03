@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ntavelis\Dockposer\Executors;
 
 use Ntavelis\Dockposer\Contracts\ExecutorInterface;
