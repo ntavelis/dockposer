@@ -1,4 +1,4 @@
-FROM php:7.2
+FROM php:7.4
 LABEL maintainers="Athanasios Ntavelis <davelis89@gmail.com>"
 
 # Install composer
