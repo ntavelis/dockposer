@@ -6,6 +6,11 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [Unreleased]
 
+## [0.3.0] - 2020-08-06
+
+### Changed
+- Fixed ending of info messages.
+
 ## [0.2.2] - 2020-06-03
 
 ### Changed
