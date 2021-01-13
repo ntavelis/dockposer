@@ -37,6 +37,16 @@ jobs:
                 with:
                     args: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpunit
+    unit_tests_php80:
+        name: Unit tests PHP 8.0
+        runs-on: ubuntu-latest
+        container: php:8.0
+        steps:
+            -   uses: actions/checkout@v1
+            -   uses: docker://composer:2
+                with:
+                    args: composer install --no-ansi --no-progress
+            -   run: ./vendor/bin/phpunit
     PSR12_code_style:
         name: PSR 12 Codestyle checks
         runs-on: ubuntu-latest
