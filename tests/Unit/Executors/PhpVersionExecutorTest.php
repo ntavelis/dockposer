@@ -103,6 +103,30 @@ class PhpVersionExecutorTest extends TestCase
     }
 
     /** @test */
+    public function itWillCorrectlyFormatTheVersionInCaseWeAreInAZeroMinoVersion(): void
+    {
+        $provider = new PlatformDependenciesProvider([
+            'php' => '[>= 8.0.0.0-dev < 9.0.0.0-dev]',
+            'ext-ctype' => '[]',
+            'ext-iconv' => '[]',
+            'ntavelis/dockposer' => '== 9999999-dev',
+        ]);
+        $executor = new PhpVersionExecutor($this->filesystem, $this->config, $provider);
+        $this->filesystem
+            ->expects($this->once())
+            ->method('readFile')
+            ->willReturn("###> ntavelis/dockposer/php-docker-image ###\nFROM php:7.2-fpm\n###> ntavelis/dockposer/php-docker-image ###");
+        $this->filesystem
+            ->expects($this->once())
+            ->method('put')
+            ->with('docker/php-fpm/Dockerfile', "###> ntavelis/dockposer/php-docker-image ###\nFROM php:8.0-fpm\n###> ntavelis/dockposer/php-docker-image ###");
+
+        $result = $executor->execute();
+
+        $this->assertSame(ExecutorStatus::SUCCESS, $result->getStatus());
+    }
+
+    /** @test */
     public function itWillNotUpdateThePhpVersionInThePhpFpmDockerFileInCaseItResolvesToTheSameMajorVersionAsTheOneItCurrentlyHas(): void
     {
         $this->filesystem

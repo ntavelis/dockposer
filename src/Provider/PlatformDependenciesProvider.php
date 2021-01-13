@@ -71,7 +71,7 @@ class PlatformDependenciesProvider
     {
         $cleanVersionString = str_replace(['-dev', '[', ']'], '', $version);
         $upperLowerVersionsArray = explode(' ', $cleanVersionString);
-        $phpVersion = (string)(float)$upperLowerVersionsArray[ComposerVersionIndexes::LOWER_LIMIT_VERSION_POSITION];
-        $this->phpVersion = $phpVersion;
+        $phpVersion = (float)$upperLowerVersionsArray[ComposerVersionIndexes::LOWER_LIMIT_VERSION_POSITION];
+        $this->phpVersion = sprintf("%.1f", $phpVersion);
     }
 }

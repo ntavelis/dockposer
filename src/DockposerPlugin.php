@@ -39,7 +39,7 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
         $this->io->write('Dockposer Plugin has been activated');
     }
 
-    public function postDependenciesSolving(InstallerEvent $event = null): void
+    public function run(InstallerEvent $event = null): void
     {
         $packages = $this->composer->getPackage()->getRequires();
         $dependencies = array_map(function ($version) {
@@ -60,7 +60,17 @@ class DockposerPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InstallerEvents::POST_DEPENDENCIES_SOLVING => 'postDependenciesSolving',
+            InstallerEvents::PRE_OPERATIONS_EXEC => 'run',
         ];
+    }
+
+    public function deactivate(Composer $composer, IOInterface $io): void
+    {
+        // TODO: Implement deactivate() method.
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io): void
+    {
+        // TODO: Implement uninstall() method.
     }
 }

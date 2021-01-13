@@ -8,7 +8,7 @@ jobs:
         container: php:7.2
         steps:
             -   uses: actions/checkout@v1
-            -   uses: docker://composer:1
+            -   uses: docker://composer:2
                 with:
                     args: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpunit --coverage-clover=build/coverage.xml
@@ -23,7 +23,7 @@ jobs:
         container: php:7.3
         steps:
             -   uses: actions/checkout@v1
-            -   uses: docker://composer:1
+            -   uses: docker://composer:2
                 with:
                     args: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpunit
@@ -33,7 +33,7 @@ jobs:
         container: php:7.4
         steps:
             -   uses: actions/checkout@v1
-            -   uses: docker://composer:1
+            -   uses: docker://composer:2
                 with:
                     args: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpunit
@@ -43,7 +43,7 @@ jobs:
         container: php:7.2
         steps:
             -   uses: actions/checkout@v1
-            -   uses: docker://composer:1
+            -   uses: docker://composer:2
                 with:
                     args: composer install --no-ansi --no-progress
             -   run: ./vendor/bin/phpcs --standard=PSR12 src
@@ -53,7 +53,7 @@ jobs:
         container: php:7.2
         steps:
             -   uses: actions/checkout@v1
-            -   uses: docker://composer:1
+            -   uses: docker://composer:2
                 with:
                     args: composer install --no-ansi --no-progress
             -   run: vendor/bin/phpstan analyse -l 6 src tests

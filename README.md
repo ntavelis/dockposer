@@ -18,6 +18,7 @@ With this composer-plugin by declaring the php extensions in your composer.json,
 ## Prerequisites
 
 The package will generate `docker` and `docker-compose` files. So I assume you have them installed in your system.
+Composer version 2 and above to be installed to your computer. If you need composer 1 support, please use version 0.3.0 of this package.
 
 ## Installation
 

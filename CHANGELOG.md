@@ -6,6 +6,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [Unreleased]
 
+## [1.0.0] - 2021-01-13
+
+### Added
+- Php 8.0 support
+- Conform to composer 2 plugin api
+- Update README.md
+
 ## [0.3.0] - 2020-08-06
 
 ### Changed
