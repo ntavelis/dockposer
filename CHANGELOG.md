@@ -6,6 +6,11 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [Unreleased]
 
+## [1.0.1] - 2021-01-13
+
+### Added
+- Switch default xdebug config to xdebug version 3
+
 ## [1.0.0] - 2021-01-13
 
 ### Added
