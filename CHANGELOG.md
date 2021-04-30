@@ -6,6 +6,11 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [Unreleased]
 
+## [1.0.2] - 2021-04-30
+
+### Updated
+- Updated project's composer dependencies
+
 ## [1.0.1] - 2021-01-13
 
 ### Added
