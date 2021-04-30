@@ -4,6 +4,9 @@ LABEL maintainers="Athanasios Ntavelis <davelis89@gmail.com>"
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# install zip and unzip unix packages, required from composer
+RUN apt update && apt install zip unzip
+
 # Install Xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN echo 'xdebug.default_enable = 1' >> /usr/local/etc/php/php.ini
