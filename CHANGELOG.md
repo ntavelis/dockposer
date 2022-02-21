@@ -12,6 +12,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Minimum version php 7.4
 - Update CI/CD to run 7.4, 8.0, 8.1 jobs
 - Format consistently the php version, can be found on dependencies or platform's php version.
+- Add property typehints to the code, and remove docblock annotations
 
 ## [1.0.2] - 2021-04-30
 
