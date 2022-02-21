@@ -15,10 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class PhpExtensionsExecutorTest extends TestCase
 {
-    /**
-     * @var PhpExtensionsExecutor
-     */
-    private $executor;
+    private PhpExtensionsExecutor $executor;
     /**
      * @var FilesystemInterface|MockObject
      */

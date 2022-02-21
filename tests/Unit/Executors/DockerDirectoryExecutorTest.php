@@ -14,10 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class DockerDirectoryExecutorTest extends TestCase
 {
-    /**
-     * @var DockerDirectoryExecutor
-     */
-    private $executor;
+    private DockerDirectoryExecutor $executor;
     /**
      * @var FilesystemInterface|MockObject
      */

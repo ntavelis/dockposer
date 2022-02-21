@@ -12,10 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class FilesystemTest extends TestCase
 {
-    /**
-     * @var Filesystem;
-     */
-    private $filesystem;
+    private Filesystem $filesystem;
 
     public function setUp(): void
     {

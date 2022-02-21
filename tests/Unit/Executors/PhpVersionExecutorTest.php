@@ -15,10 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class PhpVersionExecutorTest extends TestCase
 {
-    /**
-     * @var PhpVersionExecutor
-     */
-    private $executor;
+    private PhpVersionExecutor $executor;
     /**
      * @var FilesystemInterface|MockObject
      */
@@ -26,20 +23,14 @@ class PhpVersionExecutorTest extends TestCase
     /**
      * @var array
      */
-    private $composerDependencies = [
+    private array $composerDependencies = [
         'php' => '[>= 7.2.5.0-dev < 8.0.0.0-dev]',
         'ext-ctype' => '[]',
         'ext-iconv' => '[]',
         'ntavelis/dockposer' => '== 9999999-dev',
     ];
-    /**
-     * @var PlatformDependenciesProvider
-     */
-    private $provider;
-    /**
-     * @var DockposerConfig
-     */
-    private $config;
+    private PlatformDependenciesProvider $provider;
+    private DockposerConfig $config;
 
     public function setUp(): void
     {

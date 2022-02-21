@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class ExecutorResultTest extends TestCase
 {
-    /**
-     * @var ExecutorResult
-     */
-    private $message;
+    private ExecutorResult $message;
 
     public function setUp(): void
     {

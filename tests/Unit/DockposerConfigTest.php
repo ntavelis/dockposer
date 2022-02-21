@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class DockposerConfigTest extends TestCase
 {
-    /**
-     * @var DockposerConfig
-     */
-    private $config;
+    private DockposerConfig $config;
 
     public function setUp(): void
     {
