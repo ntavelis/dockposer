@@ -32,7 +32,7 @@ class DockerComposeExecutor implements ExecutorInterface
             $stub = $this->filesystem->compileStub($pathToStub);
             $replacedStub = str_replace($this->replaceKeys(), $this->replaceValues(), $stub);
             $this->filesystem->put($dockerComposeFile, $replacedStub);
-        } catch (FileNotFoundException|UnableToPutContentsToFile $exception) {
+        } catch (FileNotFoundException | UnableToPutContentsToFile $exception) {
             return new ExecutorResult(
                 'Unable to create ' . $dockerComposeFile . ' file, reason: ' . $exception->getMessage(),
                 ExecutorStatus::FAIL
