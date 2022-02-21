@@ -10,14 +10,8 @@ use Ntavelis\Dockposer\Utils\Helpers;
 
 class PlatformDependenciesProvider
 {
-    /**
-     * @var array
-     */
-    private $dependencies;
-    /**
-     * @var string
-     */
-    private $phpVersion;
+    private array $dependencies;
+    private string $phpVersion;
 
     public function __construct(array $dependencies)
     {
@@ -40,7 +34,7 @@ class PlatformDependenciesProvider
     public function getPhpVersion(): string
     {
         if (!isset($this->phpVersion)) {
-            return (string)(float)PHP_VERSION;
+            return $this->formatPhpVersion((float)PHP_VERSION);
         }
 
         return $this->phpVersion;
@@ -72,6 +66,11 @@ class PlatformDependenciesProvider
         $cleanVersionString = str_replace(['-dev', '[', ']'], '', $version);
         $upperLowerVersionsArray = explode(' ', $cleanVersionString);
         $phpVersion = (float)$upperLowerVersionsArray[ComposerVersionIndexes::LOWER_LIMIT_VERSION_POSITION];
-        $this->phpVersion = sprintf("%.1f", $phpVersion);
+        $this->phpVersion = $this->formatPhpVersion($phpVersion);
+    }
+
+    private function formatPhpVersion(float $phpVersion): string
+    {
+        return sprintf("%.1f", $phpVersion);
     }
 }

@@ -6,10 +6,7 @@ namespace Ntavelis\Dockposer\Utils;
 
 class FileMarker
 {
-    /**
-     * @var string
-     */
-    private $markerName;
+    private string $markerName;
 
     public function __construct(string $marker_name)
     {

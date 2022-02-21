@@ -18,27 +18,15 @@ class ExecutorsFactoryTest extends TestCase
      * @var FilesystemInterface|MockObject
      */
     private $filesystem;
-    /**
-     * @var array
-     */
-    private $composerDependencies = [
+    private array $composerDependencies = [
         'php' => '[>= 7.2.5.0-dev < 8.0.0.0-dev]',
         'ext-ctype' => '[]',
         'ext-iconv' => '[]',
         'ntavelis/dockposer' => '== 9999999-dev',
     ];
-    /**
-     * @var PlatformDependenciesProvider
-     */
-    private $provider;
-    /**
-     * @var DockposerConfig
-     */
-    private $config;
-    /**
-     * @var ExecutorsFactory
-     */
-    private $factory;
+    private PlatformDependenciesProvider $provider;
+    private DockposerConfig $config;
+    private ExecutorsFactory $factory;
 
 
     public function setUp(): void

@@ -17,18 +17,9 @@ use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 
 class DockposerPlugin implements PluginInterface, EventSubscriberInterface
 {
-    /**
-     * @var Composer
-     */
-    private $composer;
-    /**
-     * @var IOInterface
-     */
-    private $io;
-    /**
-     * @var Config
-     */
-    private $config;
+    private Composer $composer;
+    private IOInterface $io;
+    private Config $config;
 
     public function activate(Composer $composer, IOInterface $io): void
     {

@@ -18,22 +18,10 @@ class PhpVersionExecutor implements ExecutorInterface
 {
     private const TEMPLATE = 'FROM php:{{php_version}}-fpm';
     private const CONFIG_MARKER = 'ntavelis/dockposer/php-docker-image';
-    /**
-     * @var FilesystemInterface
-     */
-    private $filesystem;
-    /**
-     * @var DockposerConfig
-     */
-    private $config;
-    /**
-     * @var PlatformDependenciesProvider
-     */
-    private $platformDependenciesProvider;
-    /**
-     * @var FileMarker
-     */
-    private $marker;
+    private FilesystemInterface $filesystem;
+    private DockposerConfig $config;
+    private PlatformDependenciesProvider $platformDependenciesProvider;
+    private FileMarker $marker;
 
     public function __construct(
         FilesystemInterface $filesystem,

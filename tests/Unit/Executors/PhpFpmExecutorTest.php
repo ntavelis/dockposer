@@ -14,10 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class PhpFpmExecutorTest extends TestCase
 {
-    /**
-     * @var PhpFpmExecutor
-     */
-    private $executor;
+    private PhpFpmExecutor $executor;
     /**
      * @var FilesystemInterface|MockObject
      */

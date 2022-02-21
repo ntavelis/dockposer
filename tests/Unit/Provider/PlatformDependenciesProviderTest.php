@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class PlatformDependenciesProviderTest extends TestCase
 {
-    /**
-     * @var array
-     */
-    private $composerDependencies = [
+    private array $composerDependencies = [
         'php' => '[>= 7.2.5.0-dev < 8.0.0.0-dev]',
         'ext-ctype' => '[]',
         'ext-iconv' => '[]',
@@ -26,10 +23,7 @@ class PlatformDependenciesProviderTest extends TestCase
         'symfony/yaml' => '[>= 5.0.0.0-dev < 5.1.0.0-dev]',
     ];
 
-    /**
-     * @var PlatformDependenciesProvider
-     */
-    private $provider;
+    private PlatformDependenciesProvider $provider;
 
     public function setUp(): void
     {

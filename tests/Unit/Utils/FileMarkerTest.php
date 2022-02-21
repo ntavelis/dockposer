@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class FileMarkerTest extends TestCase
 {
-    /**
-     * @var FileMarker
-     */
-    private $fileMarker;
+    private FileMarker $fileMarker;
 
     public function setUp(): void
     {

@@ -22,22 +22,10 @@ class PhpExtensionsExecutor implements ExecutorInterface
     private const CONFIG_MARKER = 'ntavelis/dockposer/php-extensions';
     private const ZERO_EXTENSIONS_MESSAGE = '# You have installed all the required extensions,' .
     ' or you are requiring prebuild extensions that already exist inside the image';
-    /**
-     * @var FilesystemInterface
-     */
-    private $filesystem;
-    /**
-     * @var DockposerConfig
-     */
-    private $config;
-    /**
-     * @var PlatformDependenciesProvider
-     */
-    private $platformDependenciesProvider;
-    /**
-     * @var FileMarker
-     */
-    private $marker;
+    private FilesystemInterface $filesystem;
+    private DockposerConfig $config;
+    private PlatformDependenciesProvider $platformDependenciesProvider;
+    private FileMarker $marker;
 
     public function __construct(
         FilesystemInterface $filesystem,

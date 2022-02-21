@@ -14,10 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class NginxExecutorTest extends TestCase
 {
-    /**
-     * @var NginxExecutor
-     */
-    private $executor;
+    private NginxExecutor $executor;
     /**
      * @var FilesystemInterface|MockObject
      */

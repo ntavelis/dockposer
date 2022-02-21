@@ -15,10 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class PostDependenciesEventHandlerTest extends TestCase
 {
-    /**
-     * @var PostDependenciesEventHandler
-     */
-    private $executor;
+    private PostDependenciesEventHandler $executor;
     /**
      * @var ExecutorsFactory|MockObject
      */

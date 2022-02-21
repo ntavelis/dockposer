@@ -18,18 +18,9 @@ use Ntavelis\Dockposer\Provider\PlatformDependenciesProvider;
 
 class ExecutorsFactory
 {
-    /**
-     * @var DockposerConfig
-     */
-    private $config;
-    /**
-     * @var FilesystemInterface
-     */
-    private $filesystem;
-    /**
-     * @var PlatformDependenciesProvider
-     */
-    private $platformDependenciesProvider;
+    private DockposerConfig $config;
+    private FilesystemInterface $filesystem;
+    private PlatformDependenciesProvider $platformDependenciesProvider;
 
     public function __construct(
         DockposerConfig $config,
