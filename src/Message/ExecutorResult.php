@@ -6,14 +6,8 @@ namespace Ntavelis\Dockposer\Message;
 
 class ExecutorResult
 {
-    /**
-     * @var string
-     */
-    private $result;
-    /**
-     * @var string
-     */
-    private $status;
+    private string $result;
+    private string $status;
 
     public function __construct(string $result, string $status)
     {

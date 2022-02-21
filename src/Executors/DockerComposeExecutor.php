@@ -14,14 +14,8 @@ use Ntavelis\Dockposer\Message\ExecutorResult;
 
 class DockerComposeExecutor implements ExecutorInterface
 {
-    /**
-     * @var FilesystemInterface
-     */
-    private $filesystem;
-    /**
-     * @var DockposerConfig
-     */
-    private $config;
+    private FilesystemInterface $filesystem;
+    private DockposerConfig $config;
 
     public function __construct(FilesystemInterface $filesystem, DockposerConfig $config)
     {
@@ -38,7 +32,7 @@ class DockerComposeExecutor implements ExecutorInterface
             $stub = $this->filesystem->compileStub($pathToStub);
             $replacedStub = str_replace($this->replaceKeys(), $this->replaceValues(), $stub);
             $this->filesystem->put($dockerComposeFile, $replacedStub);
-        } catch (FileNotFoundException | UnableToPutContentsToFile $exception) {
+        } catch (FileNotFoundException|UnableToPutContentsToFile $exception) {
             return new ExecutorResult(
                 'Unable to create ' . $dockerComposeFile . ' file, reason: ' . $exception->getMessage(),
                 ExecutorStatus::FAIL

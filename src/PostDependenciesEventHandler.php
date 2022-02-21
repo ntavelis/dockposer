@@ -11,14 +11,8 @@ use Ntavelis\Dockposer\Factory\ExecutorsFactory;
 class PostDependenciesEventHandler
 {
     private const PACKAGE_NAME = 'Dockposer';
-    /**
-     * @var IOInterface
-     */
-    private $io;
-    /**
-     * @var ExecutorsFactory
-     */
-    private $executorsFactory;
+    private IOInterface $io;
+    private ExecutorsFactory $executorsFactory;
 
     public function __construct(
         IOInterface $io,

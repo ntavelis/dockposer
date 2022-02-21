@@ -6,10 +6,7 @@ namespace Ntavelis\Dockposer\Utils;
 
 class PreBundledExtensions
 {
-    /**
-     * @var array
-     */
-    private static $preBundledExtensions = [
+    private static array $preBundledExtensions = [
         'core',
         'ctype',
         'curl',

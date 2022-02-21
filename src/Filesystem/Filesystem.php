@@ -11,10 +11,7 @@ use Ntavelis\Dockposer\Exception\UnableToPutContentsToFile;
 
 class Filesystem implements FilesystemInterface
 {
-    /**
-     * @var string
-     */
-    private $pathPrefix;
+    private string $pathPrefix;
 
     public function __construct(string $pathPrefix)
     {

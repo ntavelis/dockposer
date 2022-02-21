@@ -8,10 +8,7 @@ use Ntavelis\Dockposer\DockposerConfig;
 
 class PathsResolver
 {
-    /**
-     * @var DockposerConfig
-     */
-    private $dockposerConfig;
+    private DockposerConfig $dockposerConfig;
 
     public function __construct(DockposerConfig $dockposerConfig)
     {

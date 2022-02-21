@@ -13,14 +13,8 @@ use Ntavelis\Dockposer\Message\ExecutorResult;
 
 class DockerDirectoryExecutor implements ExecutorInterface
 {
-    /**
-     * @var FilesystemInterface
-     */
-    private $filesystem;
-    /**
-     * @var DockposerConfig
-     */
-    private $config;
+    private FilesystemInterface $filesystem;
+    private DockposerConfig $config;
 
     public function __construct(FilesystemInterface $filesystem, DockposerConfig $config)
     {

@@ -10,14 +10,8 @@ use Ntavelis\Dockposer\Utils\Helpers;
 
 class PlatformDependenciesProvider
 {
-    /**
-     * @var array
-     */
-    private $dependencies;
-    /**
-     * @var string
-     */
-    private $phpVersion;
+    private array $dependencies;
+    private string $phpVersion;
 
     public function __construct(array $dependencies)
     {
